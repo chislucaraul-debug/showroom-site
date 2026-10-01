@@ -1,0 +1,956 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Auto Select — Mașini rulate verificate</title>
+<meta name="description" content="Mașini rulate verificate, cu acte și istoric. Vezi stocul, prețurile și promoțiile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#F1F2EE; --surface:#FFFFFF; --ink:#0F1B2D; --muted:#586376; --line:#D9DCD5;
+  --blue:#0B4EA2; --blue-ink:#FFFFFF; --sticker:#FFD43B; --red:#C8102E; --green:#1F7A4D;
+  --stage:#E2E5DF; --stage2:#CDD3CA; --foot:#0F1B2D; --foot-ink:#C9D1DC;
+  --font:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0D131B; --surface:#151E29; --ink:#ECEFF3; --muted:#9AA6B5; --line:#273343;
+    --blue:#5B92F0; --blue-ink:#08111D; --red:#FF5A6E; --green:#4CC38A;
+    --stage:#1B2633; --stage2:#243243; --foot:#080D13; --foot-ink:#AEB8C5; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0D131B; --surface:#151E29; --ink:#ECEFF3; --muted:#9AA6B5; --line:#273343;
+  --blue:#5B92F0; --blue-ink:#08111D; --red:#FF5A6E; --green:#4CC38A;
+  --stage:#1B2633; --stage2:#243243; --foot:#080D13; --foot-ink:#AEB8C5; color-scheme:dark;
+}
+html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+[hidden]{display:none !important}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.display{font-stretch:125%;font-weight:800;letter-spacing:-.01em;line-height:1.02}
+.h1{font-size:clamp(32px,5.2vw,58px);margin:0;max-width:18ch}
+.h2{font-size:clamp(22px,2.6vw,28px);font-stretch:112%;font-weight:750;margin:0;line-height:1.15}
+.lead{font-size:18px;color:var(--muted);max-width:60ch;margin:14px 0 0}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:10px;font:inherit;font-weight:700;font-size:16px;text-decoration:none;border:0;cursor:pointer;white-space:nowrap}
+.btn-blue{background:var(--blue);color:var(--blue-ink)}
+.btn-wa{background:#1C9E52;color:#fff}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn-dark{background:#111;color:var(--sticker);width:100%}
+.link{font-weight:700;color:var(--blue);text-decoration:none}
+.link:hover{text-decoration:underline}
+
+/* Header */
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
+.hdr{display:flex;align-items:center;gap:24px;min-height:68px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-stretch:125%;font-weight:800;font-size:20px;letter-spacing:-.01em}
+.brand-mark{width:34px;height:26px;border-radius:4px;background:var(--sticker);color:#111;display:grid;place-items:center;font-size:12px;font-weight:800;transform:rotate(-4deg)}
+.nav{display:flex;gap:28px;margin-left:auto}
+.nav a{text-decoration:none;font-weight:600;font-size:15px;color:var(--muted);padding:10px 0}
+.nav a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--blue)}
+.nav a:hover{color:var(--ink)}
+.hdr-call{min-height:44px;padding:0 16px}
+.lbl-short{display:none}
+
+/* Home */
+.intro{padding:40px 20px 24px}
+.hero{padding-bottom:16px}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:center}
+.hero-stage{position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:var(--stage);touch-action:pan-y}
+.hero-stage > svg,.hero-stage > img{width:100%;height:100%;object-fit:cover}
+.hero-nav{position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:4px;background:var(--surface);border-radius:999px;padding:4px}
+.round{width:40px;height:40px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.round:hover{background:var(--stage)}
+.hero-count{font-weight:650;font-size:14px;min-width:44px;text-align:center}
+.sticker{position:relative;z-index:2;margin-left:-64px;background:var(--sticker);color:#111;border-radius:6px;padding:24px 26px 26px;transform:rotate(-1.2deg);box-shadow:0 22px 44px -20px rgba(0,0,0,.45)}
+.sticker.enter{animation:slap .55s cubic-bezier(.2,.9,.3,1.15) .15s both}
+@keyframes slap{from{opacity:0;transform:rotate(-7deg) translateY(-18px) scale(1.04)}to{opacity:1;transform:rotate(-1.2deg)}}
+.sticker-kicker{margin:0 0 6px;font-size:14px;font-weight:600;opacity:.72}
+.sticker-title{margin:0;font-stretch:118%;font-weight:800;font-size:clamp(24px,2.6vw,32px);line-height:1.08}
+.sticker-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 16px;margin:18px 0;padding:14px 0;border-top:2px solid #111;border-bottom:2px solid #111}
+.sticker-specs dt{font-size:12.5px;opacity:.7}
+.sticker-specs dd{margin:0;font-weight:700;font-size:15px}
+.sticker-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.sp-now{font-stretch:125%;font-weight:800;font-size:clamp(38px,4vw,50px);line-height:1}
+.sticker-price s{color:#A1001C;font-weight:700;font-size:20px}
+
+.block{padding:40px 20px 8px}
+.block-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.bodychips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.bodychip{display:flex;flex-direction:column;gap:4px;padding:14px 16px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);text-decoration:none}
+.bodychip:hover{border-color:var(--ink)}
+.bodychip svg{width:88px;height:auto;color:var(--ink);margin-bottom:6px}
+.bodychip strong{font-weight:700}
+.bodychip span{color:var(--muted);font-size:14px}
+
+.visit{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:48px;padding:44px 0}
+.visit-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;align-items:start}
+.visit p{margin:8px 0 0;color:var(--muted)}
+.visit .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:650;color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--green)}
+.hours{list-style:none;padding:0;margin:10px 0 0}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--line)}
+.hours li.today{font-weight:700}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.card{background:var(--surface);border-radius:14px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;border:1px solid var(--line)}
+.card:hover{border-color:var(--ink)}
+.card-media{position:relative;aspect-ratio:16/10;background:var(--stage)}
+.card-media > svg,.card-media > img{width:100%;height:100%;object-fit:cover}
+.card.is-sold .card-media > svg,.card.is-sold .card-media > img{filter:grayscale(1);opacity:.6}
+.badge{position:absolute;top:12px;left:12px;font-weight:700;font-size:13px;padding:4px 11px;border-radius:999px}
+.badge-inline{position:static;display:inline-block}
+.badge-promo{background:var(--red);color:#fff}
+.badge-res{background:var(--sticker);color:#111}
+.badge-sold{background:#111;color:#fff}
+.card-body{padding:16px 16px 0;flex:1}
+.card-title{font-size:17px;font-weight:700;margin:0;line-height:1.25}
+.card-sub{margin:3px 0 0;color:var(--muted);font-size:14px}
+.specs{display:flex;flex-wrap:wrap;gap:4px 14px;list-style:none;padding:0;margin:10px 0 0;font-size:14px;color:var(--muted)}
+.tag{margin:14px 16px 16px;background:var(--sticker);color:#111;border-radius:8px;padding:10px 14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.tag-price{font-stretch:125%;font-weight:800;font-size:22px;line-height:1.1}
+.tag-old{color:#A1001C;font-weight:700;font-size:15px}
+.tag-save{margin-left:auto;background:#111;color:var(--sticker);font-weight:700;font-size:13px;border-radius:999px;padding:2px 9px;align-self:center}
+.tag-sold{background:var(--stage);color:var(--red)}
+.tag-lg{margin:20px 0 0;padding:16px 18px}
+.tag-lg .tag-price{font-size:clamp(34px,4vw,46px)}
+.tag-lg .tag-old{font-size:18px}
+
+/* List */
+.page-head{padding:36px 20px 18px}
+.list-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+.filters{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 86px)}
+.fgroup{margin:0 0 18px}
+.fgroup h2{font-size:14px;font-weight:700;margin:0 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:36px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.sel{width:100%;min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;padding:0 10px}
+.check{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;cursor:pointer}
+.check input{width:20px;height:20px;accent-color:var(--blue)}
+.freset{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--blue);cursor:pointer}
+.filters-done{display:none;width:100%;margin-top:6px}
+.list-tools{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.filters-toggle{display:none;min-height:44px}
+.fcount{background:var(--blue);color:var(--blue-ink);border-radius:999px;font-size:12px;padding:1px 7px}
+.sortlab{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;margin-left:auto}
+.sortlab .sel{width:auto}
+.empty{grid-column:1/-1;background:var(--surface);border:1.5px dashed var(--line);border-radius:14px;padding:32px}
+.empty h3{margin:0 0 6px;font-size:20px}
+.empty p{margin:0 0 18px;color:var(--muted)}
+.empty .btns{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Detail */
+.crumbs{padding:20px 20px 12px}
+.back{display:inline-flex;align-items:center;gap:4px;text-decoration:none;font-weight:600;color:var(--muted)}
+.back:hover{color:var(--ink)}
+.soldbanner{background:var(--ink);color:var(--paper);border-radius:12px;padding:14px 18px;margin-bottom:18px}
+.detail{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:36px;align-items:start}
+.gal-main{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;background:var(--stage);cursor:zoom-in;touch-action:pan-y}
+.gal-main > .slide{position:absolute;inset:0}
+.slide > svg,.slide > img{width:100%;height:100%;object-fit:cover}
+.gal-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+.gal-arrow.prev{left:12px}.gal-arrow.next{right:12px}
+.gal-count{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.66);color:#fff;font-size:13px;font-weight:600;border-radius:999px;padding:3px 10px}
+.gal-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px}
+.thumb{flex:0 0 96px;aspect-ratio:16/10;border-radius:8px;overflow:hidden;border:2px solid transparent;padding:0;background:var(--stage);cursor:pointer}
+.thumb > svg,.thumb > img{width:100%;height:100%;object-fit:cover}
+.thumb[aria-current="true"]{border-color:var(--ink)}
+.note{font-size:13px;color:var(--muted);margin:8px 0 0}
+.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 86px)}
+.panel-sub{margin:0;color:var(--muted);font-weight:600;font-size:15px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.h-car{font-size:clamp(28px,3.4vw,40px);margin:8px 0 14px;line-height:1.05}
+.specs-lg{font-size:15px;color:var(--ink);gap:8px}
+.specs-lg li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-weight:600}
+.panel-cta{display:grid;gap:10px;margin-top:16px}
+.panel-note{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:14px;margin:16px 0 0}
+.panel-note svg{flex:0 0 auto;margin-top:2px}
+.detail-more{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:36px;padding-top:44px;padding-bottom:8px}
+.spec{display:grid;grid-template-columns:1fr 1fr;margin:14px 0 0;border-top:1px solid var(--line)}
+.spec div{padding:12px 16px 12px 0;border-bottom:1px solid var(--line)}
+.spec dt{font-size:13px;color:var(--muted)}
+.spec dd{margin:2px 0 0;font-weight:650}
+.feat{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:14px 0 30px}
+.feat li{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
+.desc{max-width:60ch;margin:14px 0 0;white-space:pre-line}
+
+.mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--surface);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));gap:10px}
+.mbar .btn{flex:1}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(5,8,12,.95);display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.lb-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;color:#fff;font-weight:600}
+.lb-close{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;cursor:pointer}
+.lb-stage{position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:0 12px 24px;min-height:0;touch-action:pan-y}
+.lb-img{width:min(100%,1200px);max-height:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden}
+.lb-img > svg,.lb-img > img{width:100%;height:100%;object-fit:contain}
+
+/* About / contact */
+.about{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start;padding-bottom:16px}
+.about p{max-width:62ch}
+.about .sticker{margin:0;transform:rotate(-1deg)}
+.about .sticker ul{margin:12px 0 0;padding-left:20px}
+.about .sticker li{margin:6px 0;font-weight:600}
+.contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start;padding-bottom:16px}
+.cbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.cbox + .cbox{margin-top:16px}
+.cbox h2{font-size:18px;margin:0 0 6px}
+.cbox p{margin:4px 0 0;color:var(--muted)}
+.cbox .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+
+/* Footer */
+.site-foot{background:var(--foot);color:var(--foot-ink);margin-top:64px;padding:48px 0 28px}
+.foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:28px}
+.site-foot h3{font-size:15px;font-weight:700;color:#fff;margin:0 0 10px}
+.site-foot p{margin:0 0 6px;font-size:15px}
+.site-foot a{color:#fff}
+.site-foot .brand{color:#fff;margin-bottom:10px}
+.site-foot .hours li{border-color:rgba(255,255,255,.12);font-size:15px}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:32px;padding-top:18px;font-size:14px;opacity:.75}
+
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:600;z-index:120}
+
+@media (max-width:960px){
+  .hero-grid{grid-template-columns:1fr}
+  .sticker{margin:-44px 12px 0}
+  .hero-nav{left:auto;right:12px;top:12px;bottom:auto}
+  .detail,.detail-more,.about,.contact{grid-template-columns:1fr}
+  .panel{position:static}
+  .list-layout{grid-template-columns:minmax(0,1fr)}
+  .sortlab .sort-txt{display:none}
+  .filters{display:none;position:static}
+  .filters.open{display:block}
+  .filters-toggle{display:inline-flex}
+  .filters-done{display:flex}
+  .visit-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .hdr{flex-wrap:wrap;gap:6px 16px;padding-top:10px}
+  .nav{order:3;width:100%;margin-left:0;overflow-x:auto;gap:22px}
+  .hdr-call{margin-left:auto}
+  .lbl-long{display:none}.lbl-short{display:inline}
+  .intro{padding-top:28px}
+  .sticker-specs{grid-template-columns:repeat(2,1fr)}
+  body.has-mbar .mbar{display:flex}
+  body.has-mbar main{padding-bottom:80px}
+  .panel-cta .btn-wa,.panel-cta .btn-blue{display:none}
+  .foot-grid{grid-template-columns:1fr}
+  .gal-arrow{width:38px;height:38px}
+}
+@media (prefers-reduced-motion: reduce){
+  .sticker.enter{animation:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<header class="site-head">
+  <div class="wrap hdr">
+    <a class="brand" href="#/" id="brand"></a>
+    <nav class="nav" aria-label="Meniu principal">
+      <a href="#/" data-nav="/">Acasă</a>
+      <a href="#/masini" data-nav="/masini">Mașini</a>
+      <a href="#/despre-noi" data-nav="/despre-noi">Despre noi</a>
+      <a href="#/contact" data-nav="/contact">Contact</a>
+    </nav>
+    <a class="btn btn-blue hdr-call" id="hdrcall"></a>
+  </div>
+</header>
+<main id="app"></main>
+<footer class="site-foot" id="footer"></footer>
+<div class="mbar" id="mbar"></div>
+<div class="lb" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Galerie foto"></div>
+
+<script>
+/* =========================================================
+   1. DATELE DEALERULUI — de înlocuit cu datele clientului
+   ========================================================= */
+const CONFIG = {
+  name: "Auto Select",
+  mark: "AS",
+  tagline: "Mașini rulate verificate",
+  headline: "Mașini rulate verificate, gata de drum",
+  since: 2010,
+  phone: "+40700000000",
+  phoneDisplay: "0700 000 000",
+  whatsapp: "40700000000",
+  email: "",
+  address: "Str. Exemplu nr. 10",
+  city: "Orașul tău",
+  legalName: "Auto Select SRL",
+  cui: "RO00000000",
+  regCom: "J00/000/2010",
+  facebook: "",
+  instagram: "",
+  soldVisibleDays: 30,
+  hours: [
+    { label: "Luni – Vineri", days: [1,2,3,4,5], open: "09:00", close: "19:00" },
+    { label: "Sâmbătă", days: [6], open: "09:00", close: "15:00" },
+    { label: "Duminică", days: [0], open: null, close: null }
+  ],
+  about: [
+    "Suntem un parc auto de familie. Aducem mașini rulate din Germania, Austria și Olanda, le verificăm înainte să ajungă în parc și îți spunem exact ce știm despre fiecare.",
+    "Nu avem multe mașini deodată, și asta e intenționat: le alegem pe rând, le pregătim cum trebuie și le vindem la un preț pe care îl putem explica."
+  ],
+  promises: [
+    "Istoric de service, acolo unde există",
+    "Verificare tehnică înainte de vânzare",
+    "Test drive oricând în program",
+    "Ajutor cu actele de înmatriculare"
+  ]
+};
+
+/* =========================================================
+   2. STOCUL — date de exemplu. Mai târziu vin din Airtable.
+   photos: [] = se afișează ilustrația; adaugă URL-uri de poze reale.
+   ========================================================= */
+const daysAgo = n => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0,10); };
+
+const SAMPLE_CARS = [
+  { id:"recA1x9Pq01Ta", title:"Volkswagen Passat Variant 2.0 TDI Highline", brand:"Volkswagen", year:2018, km:187400, hp:150, cc:1968, fuel:"Diesel", gearbox:"Automată", body:"Break", price:14900, oldPrice:15900, status:"Disponibil", featured:true, color:{name:"Gri", hex:"#7D848B"}, euro:"Euro 6", added:daysAgo(4), photos:[],
+    features:["Navigație","Climatronic 3 zone","Senzori parcare față-spate","Cameră marșarier","Scaune încălzite","Pilot automat adaptiv","Faruri LED","CarPlay / Android Auto"],
+    description:"Adusă din Germania, un singur proprietar, carte de service la zi.\nCutie DSG cu 7 trepte. Distribuție schimbată la 180.000 km. Anvelope de iarnă incluse." },
+  { id:"recB7Lm2Rt02Kb", title:"Audi A4 Avant 2.0 TDI quattro S line", brand:"Audi", year:2016, km:205600, hp:190, cc:1968, fuel:"Diesel", gearbox:"Automată", body:"Break", price:15490, oldPrice:null, status:"Disponibil", featured:true, color:{name:"Albastru", hex:"#1E2D4F"}, euro:"Euro 6", added:daysAgo(1), photos:[],
+    features:["Tracțiune quattro","Pachet S line","Navigație MMI","Scaune sport încălzite","Faruri Xenon","Senzori parcare","Jante aliaj 18\""],
+    description:"Tracțiune integrală, foarte stabilă iarna. Interior fără uzură vizibilă, nefumători.\nRevizie completă făcută la intrarea în parc." },
+  { id:"recC3Pz8Wd03Mc", title:"Dacia Duster 1.5 dCi Prestige 4x4", brand:"Dacia", year:2019, km:96300, hp:115, cc:1461, fuel:"Diesel", gearbox:"Manuală", body:"SUV", price:12990, oldPrice:13490, status:"Disponibil", featured:true, color:{name:"Portocaliu", hex:"#C4632C"}, euro:"Euro 6", added:daysAgo(2), photos:[],
+    features:["Tracțiune 4x4","Navigație","Cameră 360°","Climatronic","Jante aliaj 17\"","Bare longitudinale"],
+    description:"Cumpărată nouă din reprezentanță în România, primul proprietar.\nKilometraj certificat, toate reviziile în service autorizat." },
+  { id:"recD5Hn4Ys04Pd", title:"Skoda Octavia Combi 1.6 TDI Style", brand:"Skoda", year:2017, km:214000, hp:115, cc:1598, fuel:"Diesel", gearbox:"Manuală", body:"Break", price:9490, oldPrice:null, status:"Disponibil", color:{name:"Alb", hex:"#E6E8EA"}, euro:"Euro 6", added:daysAgo(9), photos:[],
+    features:["Climatronic","Senzori parcare spate","Bluetooth","Pilot automat","Jante aliaj 16\""],
+    description:"Mașină economică, consum mixt real în jur de 5 l/100 km.\nRevizie făcută în parc: ulei, filtre, plăcuțe față." },
+  { id:"recE9Kd1Qa05Re", title:"Toyota Auris 1.8 Hybrid Executive", brand:"Toyota", year:2016, km:142800, hp:136, cc:1798, fuel:"Hibrid", gearbox:"Automată", body:"Hatchback", price:10490, oldPrice:null, status:"Disponibil", color:{name:"Albastru", hex:"#2F4C7A"}, euro:"Euro 6", added:daysAgo(12), photos:[],
+    features:["Navigație","Cameră marșarier","Climatronic","Keyless","Senzori ploaie și lumină"],
+    description:"Consum foarte mic la oraș. Baterie hibrid verificată în service Toyota.\nPotrivită pentru naveta zilnică." },
+  { id:"recF2Wq7Bn06Sf", title:"BMW Seria 3 320d Sport Line", brand:"BMW", year:2015, km:228500, hp:190, cc:1995, fuel:"Diesel", gearbox:"Automată", body:"Berlină", price:11900, oldPrice:12900, status:"Disponibil", color:{name:"Negru", hex:"#202429"}, euro:"Euro 6", added:daysAgo(15), photos:[],
+    features:["Navigație Professional","Scaune sport încălzite","Faruri Xenon","Senzori parcare","Volan sport","Jante aliaj 18\""],
+    description:"Cutie automată cu 8 trepte, ulei de cutie schimbat.\nInterior din piele, nefumători." },
+  { id:"recG6Tx3Cv07Tg", title:"Renault Clio 0.9 TCe Intens", brand:"Renault", year:2018, km:88900, hp:90, cc:898, fuel:"Benzină", gearbox:"Manuală", body:"Hatchback", price:7290, oldPrice:null, status:"Disponibil", color:{name:"Roșu", hex:"#B3202B"}, euro:"Euro 6", added:daysAgo(6), photos:[],
+    features:["Navigație","Senzori parcare spate","Climatronic","Jante aliaj 16\""],
+    description:"Puțini kilometri, potrivită ca primă mașină.\nDouă chei, carte de service." },
+  { id:"recH8Yb5Dm08Uh", title:"Ford Kuga 2.0 TDCi Titanium", brand:"Ford", year:2017, km:176000, hp:150, cc:1997, fuel:"Diesel", gearbox:"Automată", body:"SUV", price:13490, oldPrice:null, status:"Rezervat", color:{name:"Gri închis", hex:"#50555B"}, euro:"Euro 6", added:daysAgo(20), photos:[],
+    features:["Haion electric","Navigație","Încălzire parbriz","Senzori parcare","Faruri bi-xenon"],
+    description:"Rezervată cu avans. Dacă vânzarea nu se finalizează, revine în stoc." },
+  { id:"recJ1Mv9Ek09Vj", title:"Opel Zafira 1.6 CDTI Innovation, 7 locuri", brand:"Opel", year:2016, km:199300, hp:136, cc:1598, fuel:"Diesel", gearbox:"Manuală", body:"Monovolum", price:8790, oldPrice:null, status:"Disponibil", color:{name:"Argintiu", hex:"#A7ADB3"}, euro:"Euro 6", added:daysAgo(25), photos:[],
+    features:["7 locuri","Plafon panoramic","Climatronic","Senzori parcare","Pilot automat"],
+    description:"Mașină de familie cu 7 locuri și plafon panoramic.\nRevizie nouă, ITP valabil." },
+  { id:"recK4Nc6Fl10Wk", title:"Volkswagen Caddy Maxi 2.0 TDI", brand:"Volkswagen", year:2017, km:241000, hp:102, cc:1968, fuel:"Diesel", gearbox:"Manuală", body:"Van", price:9990, oldPrice:10490, status:"Disponibil", color:{name:"Alb", hex:"#ECEEEF"}, euro:"Euro 6", added:daysAgo(30), photos:[],
+    features:["Ușă glisantă","Climatizare","Senzori parcare spate","Bluetooth"],
+    description:"Utilitară întreținută, se vinde cu factură, bună pentru firmă.\nSpațiu de marfă mare, fără rugină." },
+  { id:"recL7Rg2Gp11Xm", title:"Hyundai Tucson 1.6 GDI Style", brand:"Hyundai", year:2019, km:71200, hp:132, cc:1591, fuel:"Benzină", gearbox:"Manuală", body:"SUV", price:15990, oldPrice:null, status:"Disponibil", color:{name:"Verde oliv", hex:"#5B6B5A"}, euro:"Euro 6", added:daysAgo(8), photos:[],
+    features:["Navigație","Cameră marșarier","Scaune și volan încălzite","Senzori parcare","Jante aliaj 18\""],
+    description:"Kilometri puțini, garanție de fabrică expirată recent.\nÎntreținută doar în service autorizat." },
+  { id:"recM3Sh8Hq12Yn", title:"Mazda 6 2.2 Skyactiv-D Revolution", brand:"Mazda", year:2014, km:198000, hp:150, cc:2191, fuel:"Diesel", gearbox:"Manuală", body:"Berlină", price:7990, oldPrice:null, status:"Vândut", soldDate:daysAgo(6), color:{name:"Roșu închis", hex:"#8E1B24"}, euro:"Euro 6", added:daysAgo(40), photos:[],
+    features:["Navigație","Scaune încălzite","Bose","Senzori parcare"],
+    description:"Vândută." }
+];
+
+/* =========================================================
+   3. LOGICA SITE-ULUI
+   ========================================================= */
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const num = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const eur = n => num(n) + " €";
+const slugify = s => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const ageDays = iso => Math.floor((Date.now() - new Date(iso + "T12:00:00").getTime()) / 86400000);
+const uniq = a => [...new Set(a)];
+function plural(n){
+  if (n === 1) return "1 mașină";
+  if (n !== 0 && (n % 100 === 0 || n % 100 >= 20)) return n + " de mașini";
+  return n + " mașini";
+}
+
+let CARS = [];
+function prepare(){
+  CARS.forEach(c => {
+    c.slug = slugify(c.title + " " + c.year) + "-" + c.id.slice(-5).toLowerCase();
+    c.isPromo = !!(c.oldPrice && c.oldPrice > c.price);
+    c.photos = c.photos || [];
+    c.thumbs = c.thumbs || c.photos;
+    c.features = c.features || [];
+    c.color = c.color || { name:"", hex:"#8A9099" };
+  });
+}
+
+const RANK = { "Disponibil":0, "Rezervat":1, "Vândut":2 };
+const BODY_ORDER = ["Break","SUV","Berlină","Hatchback","Monovolum","Van","Coupé","Cabrio"];
+
+function listed(){
+  return CARS.filter(c => c.status !== "Ascuns" && (c.status !== "Vândut" || ageDays(c.soldDate || daysAgo(0)) <= CONFIG.soldVisibleDays))
+    .sort((a,b) => RANK[a.status] - RANK[b.status] || (a.added < b.added ? 1 : a.added > b.added ? -1 : 0));
+}
+const isSold = c => c.status === "Vândut";
+
+const telHref = () => "tel:" + CONFIG.phone;
+function waHref(car){
+  let msg;
+  if (!car) msg = "Bună ziua, vă scriu de pe site.";
+  else if (isSold(car)) msg = `Bună ziua, am văzut că ${car.title} s-a vândut. Aveți ceva asemănător?`;
+  else msg = `Bună ziua, mă interesează ${car.title} (${car.year}, ${num(car.km)} km, ${eur(car.price)}). Link: ${location.href}`;
+  return `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
+}
+const mapsHref = () => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.address + ", " + CONFIG.city);
+
+function todayInfo(){
+  const parts = new Intl.DateTimeFormat("en-GB", { timeZone:"Europe/Bucharest", weekday:"short", hour:"2-digit", minute:"2-digit", hourCycle:"h23" }).formatToParts(new Date());
+  const get = t => parts.find(p => p.type === t).value;
+  const wd = { Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6 }[get("weekday")];
+  const now = (+get("hour")) * 60 + (+get("minute"));
+  const entry = CONFIG.hours.find(h => h.days.includes(wd));
+  const toMin = t => { const [h,m] = t.split(":"); return +h * 60 + +m; };
+  if (!entry || !entry.open) return { wd, entry, open:false, text:"Închis azi" };
+  if (now < toMin(entry.open)) return { wd, entry, open:false, text:`Deschidem azi la ${entry.open}` };
+  if (now < toMin(entry.close)) return { wd, entry, open:true, text:`Deschis acum, până la ${entry.close}` };
+  return { wd, entry, open:false, text:"Închis acum" };
+}
+function hoursList(){
+  const t = todayInfo();
+  return `<ul class="hours">${CONFIG.hours.map(h => `<li class="${h === t.entry ? "today" : ""}"><span>${esc(h.label)}</span><span>${h.open ? `${h.open} – ${h.close}` : "Închis"}</span></li>`).join("")}</ul>`;
+}
+
+/* ---------- Icons ---------- */
+const I = {
+  phone:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>',
+  chat:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 2a8 8 0 1 1-4.1 14.9l-.3-.2-2.8.8.8-2.7-.2-.3A8 8 0 0 1 12 4zm-3.2 4c-.2 0-.6.1-.9.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3.2 5 4.3 2.4.9 2.9.8 3.5.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.4l-1.8-.9c-.3-.1-.5-.1-.7.1l-.8 1c-.2.2-.3.2-.6.1a6.6 6.6 0 0 1-3.2-2.8c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.5l-.8-2c-.2-.5-.4-.4-.6-.4z"/></svg>',
+  left:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></svg>',
+  right:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>',
+  share:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
+  close:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>',
+  sliders:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
+};
+
+/* ---------- Car illustration (placeholder until real photos) ---------- */
+const PROFILES = {
+  berlina:   { hood:108, aBase:128, roofStart:170, roofY:68, roofEnd:262, rearX:318, tail:100, back:378, wf:95, wr:305, r:24 },
+  break:     { hood:108, aBase:128, roofStart:170, roofY:66, roofEnd:338, rearX:362, tail:98,  back:378, wf:95, wr:305, r:24 },
+  hatchback: { hood:110, aBase:132, roofStart:172, roofY:66, roofEnd:300, rearX:338, tail:100, back:352, wf:95, wr:288, r:23 },
+  suv:       { hood:96,  aBase:132, roofStart:168, roofY:50, roofEnd:334, rearX:356, tail:86,  back:378, wf:98, wr:304, r:27, bottom:146 },
+  monovolum: { hood:106, aBase:110, roofStart:166, roofY:52, roofEnd:336, rearX:360, tail:88,  back:376, wf:95, wr:305, r:24 },
+  van:       { hood:98,  aBase:106, roofStart:150, roofY:38, roofEnd:368, rearX:376, tail:56,  back:378, wf:95, wr:310, r:24, winEnd:205 },
+  coupe:     { hood:110, aBase:134, roofStart:180, roofY:74, roofEnd:250, rearX:330, tail:102, back:376, wf:95, wr:305, r:24 }
+};
+function shade(hex, amt){
+  const n = parseInt(hex.slice(1), 16);
+  const f = v => Math.max(0, Math.min(255, Math.round(amt < 0 ? v * (1 + amt) : v + (255 - v) * amt)));
+  const r = f(n >> 16), g = f((n >> 8) & 255), b = f(n & 255);
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+function bodyPath(p){
+  const B = p.bottom || 150;
+  return `M22 ${B} L22 ${p.hood+16} Q24 ${p.hood} 46 ${p.hood-3} L${p.aBase} ${p.hood-7} L${p.roofStart} ${p.roofY} Q${(p.roofStart+p.roofEnd)/2} ${p.roofY-3} ${p.roofEnd} ${p.roofY} L${p.rearX} ${p.tail} L${p.back-8} ${p.tail+3} Q${p.back} ${p.tail+6} ${p.back} ${p.tail+18} L${p.back} ${B} Z`;
+}
+function carGroup(car){
+  const p = PROFILES[slugify(car.body)] || PROFILES.berlina;
+  const B = p.bottom || 150, belt = p.hood - 7, col = car.color.hex;
+  const dark = shade(col, -0.38), light = shade(col, 0.3);
+  const winEnd = p.winEnd || p.rearX - 10;
+  const cTop = Math.min(p.roofEnd - 3, winEnd);
+  const dY = p.winEnd ? p.roofY + 7 : p.tail + 1;
+  const win = `M${p.aBase+10} ${belt-1} L${p.roofStart+6} ${p.roofY+7} L${cTop} ${p.roofY+7} L${winEnd} ${dY} L${winEnd} ${belt-1} Z`;
+  const mid = Math.round((p.aBase + 10 + winEnd) / 2);
+  const wheel = x => `<circle cx="${x}" cy="${B}" r="${p.r+4}" fill="#121417"/><circle cx="${x}" cy="${B}" r="${p.r}" fill="#1c1e21"/><circle cx="${x}" cy="${B}" r="${p.r*0.6}" fill="#c3c9d0"/><circle cx="${x}" cy="${B}" r="${p.r*0.6-3}" fill="#99a1aa"/><circle cx="${x}" cy="${B}" r="4" fill="#5f6770"/>`;
+  return `
+    <ellipse cx="${(22+p.back)/2}" cy="${B+p.r+1}" rx="${(p.back-22)/2+8}" ry="7" fill="#000" opacity=".2"/>
+    <path d="${bodyPath(p)}" fill="${col}"/>
+    <path d="M22 ${B-12} L${p.back} ${B-12} L${p.back} ${B} L22 ${B} Z" fill="${dark}"/>
+    <path d="M48 ${p.hood+1} L${p.back-10} ${p.tail+9}" stroke="${light}" stroke-width="2" opacity=".55" fill="none"/>
+    <path d="${win}" fill="#1f2c3a"/>
+    <path d="M${p.roofStart+14} ${p.roofY+9} L${p.roofStart+34} ${p.roofY+9} L${p.roofStart+12} ${belt-3} L${p.aBase+16} ${belt-3} Z" fill="#fff" opacity=".12"/>
+    <line x1="${mid}" y1="${p.roofY+4}" x2="${mid-3}" y2="${belt}" stroke="${col}" stroke-width="7"/>
+    <line x1="${mid-2}" y1="${belt+3}" x2="${mid-2}" y2="${B-13}" stroke="${dark}" stroke-width="1.5" opacity=".7"/>
+    <rect x="${mid+14}" y="${belt+8}" width="14" height="3" rx="1.5" fill="${dark}"/>
+    <rect x="${p.aBase+22}" y="${belt+8}" width="14" height="3" rx="1.5" fill="${dark}"/>
+    <path d="M${p.aBase+2} ${belt-1} l11 -7 l4 7 z" fill="${dark}"/>
+    <path d="M24 ${p.hood+5} q8 -6 20 -6 l0 7 l-20 3 z" fill="#f5edc8"/>
+    <rect x="${p.back-5}" y="${p.tail+9}" width="5" height="10" rx="2" fill="#c81e32"/>
+    ${wheel(p.wf)}${wheel(p.wr)}`;
+}
+function carSVG(car, variant = "side", label = ""){
+  const p = PROFILES[slugify(car.body)] || PROFILES.berlina;
+  const off = (400 - (p.back + 22)) / 2;
+  const vb = variant === "zoom" ? "176 74 232 145" : "0 0 400 250";
+  const g = variant === "mirror"
+    ? `<g transform="translate(${400-off} 30) scale(-1 1)">${carGroup(car)}</g>`
+    : `<g transform="translate(${off} 30)">${carGroup(car)}</g>`;
+  return `<svg viewBox="${vb}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(label || car.title)}" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="400" height="250" fill="var(--stage)"/>
+    <rect x="0" y="188" width="400" height="62" fill="var(--stage2)"/>
+    ${g}</svg>`;
+}
+function bodyIcon(body){
+  const p = PROFILES[slugify(body)] || PROFILES.berlina, B = p.bottom || 150;
+  const w = x => `<circle cx="${x}" cy="${B}" r="${p.r+5}" fill="var(--surface)"/><circle cx="${x}" cy="${B}" r="${p.r-3}" fill="currentColor"/>`;
+  return `<svg viewBox="12 28 376 156" aria-hidden="true"><path d="${bodyPath(p)}" fill="currentColor"/>${w(p.wf)}${w(p.wr)}</svg>`;
+}
+function media(car, i = 0, variant = "side"){
+  if (car.photos.length) return `<img src="${esc(car.thumbs[i] || car.photos[i])}" alt="${esc(car.title)} ${car.year} – poza ${i+1}" loading="${i ? "lazy" : "eager"}">`;
+  return carSVG(car, variant, `${car.title} ${car.year}`);
+}
+
+/* ---------- Shared pieces ---------- */
+function badge(car, inline = false){
+  const cls = inline ? " badge-inline" : "";
+  if (isSold(car)) return `<span class="badge badge-sold${cls}">Vândut</span>`;
+  if (car.status === "Rezervat") return `<span class="badge badge-res${cls}">Rezervat</span>`;
+  if (car.isPromo) return `<span class="badge badge-promo${cls}">Promoție</span>`;
+  return "";
+}
+function priceTag(car, lg = false){
+  const c = lg ? " tag-lg" : "";
+  if (isSold(car)) return `<div class="tag tag-sold${c}"><span class="tag-price">Vândut</span></div>`;
+  return `<div class="tag${c}"><span class="tag-price">${eur(car.price)}</span>${car.isPromo ? `<s class="tag-old" aria-label="Preț vechi">${eur(car.oldPrice)}</s><span class="tag-save">−${eur(car.oldPrice - car.price)}</span>` : ""}</div>`;
+}
+const specItems = c => [c.year, num(c.km) + " km", c.hp + " CP", c.fuel, c.gearbox].map(s => `<li>${esc(s)}</li>`).join("");
+function card(car){
+  return `<a class="card${isSold(car) ? " is-sold" : ""}" href="#/masina/${car.slug}">
+    <div class="card-media">${media(car)}${badge(car)}</div>
+    <div class="card-body"><h3 class="card-title">${esc(car.title)}</h3><p class="card-sub">${esc(car.body)}</p><ul class="specs">${specItems(car)}</ul></div>
+    ${priceTag(car)}
+  </a>`;
+}
+
+/* ---------- Router ---------- */
+const app = $("#app"), mbar = $("#mbar"), lb = $("#lightbox");
+let heroI = 0, firstHome = true;
+
+function parseHash(){
+  const h = location.hash.slice(1) || "/";
+  const [path, qs] = h.split("?");
+  return { path: path || "/", params: new URLSearchParams(qs || "") };
+}
+function setNav(path){
+  $$("[data-nav]").forEach(a => {
+    const n = a.dataset.nav;
+    const on = n === path || (n === "/masini" && path.startsWith("/masina/"));
+    on ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
+  });
+}
+let lastPath = null;
+function render(){
+  const { path, params } = parseHash();
+  document.body.classList.remove("has-mbar");
+  mbar.innerHTML = "";
+  closeLB();
+  setNav(path);
+  let m;
+  if (path === "/") renderHome();
+  else if (path === "/masini") renderList(params);
+  else if ((m = path.match(/^\/masina\/([^/]+)$/))) renderDetail(decodeURIComponent(m[1]));
+  else if (path === "/despre-noi") renderAbout();
+  else if (path === "/contact") renderContact();
+  else render404();
+  if (lastPath !== path) window.scrollTo(0, 0);
+  lastPath = path;
+}
+
+function swipe(el, onNext, onPrev){
+  let x0 = null, y0 = null;
+  el.addEventListener("pointerdown", e => { x0 = e.clientX; y0 = e.clientY; el.dataset.moved = ""; });
+  el.addEventListener("pointerup", e => {
+    if (x0 === null) return;
+    const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) { el.dataset.moved = "1"; dx < 0 ? onNext() : onPrev(); }
+  });
+  el.addEventListener("pointercancel", () => { x0 = null; });
+}
+
+/* ---------- Home ---------- */
+function heroHTML(list, i, enter){
+  const c = list[i];
+  return `<div class="hero-grid">
+    <div class="hero-stage">${media(c)}
+      ${list.length > 1 ? `<div class="hero-nav"><button class="round" data-hero="-1" aria-label="Mașina anterioară">${I.left}</button><span class="hero-count">${i+1} / ${list.length}</span><button class="round" data-hero="1" aria-label="Mașina următoare">${I.right}</button></div>` : ""}
+    </div>
+    <div class="sticker${enter ? " enter" : ""}">
+      <p class="sticker-kicker">${esc(c.body)}, ${esc(c.color.name.toLowerCase())}${c.status === "Rezervat" ? ", rezervată" : ""}</p>
+      <h2 class="sticker-title">${esc(c.title)}</h2>
+      <dl class="sticker-specs">
+        <div><dt>An</dt><dd>${c.year}</dd></div>
+        <div><dt>Kilometraj</dt><dd>${num(c.km)} km</dd></div>
+        <div><dt>Putere</dt><dd>${c.hp} CP</dd></div>
+        <div><dt>Combustibil</dt><dd>${esc(c.fuel)}</dd></div>
+        <div><dt>Cutie</dt><dd>${esc(c.gearbox)}</dd></div>
+        <div><dt>Motor</dt><dd>${num(c.cc)} cm³</dd></div>
+      </dl>
+      <div class="sticker-price"><span class="sp-now">${eur(c.price)}</span>${c.isPromo ? `<s>${eur(c.oldPrice)}</s>` : ""}</div>
+      <a class="btn btn-dark" href="#/masina/${c.slug}">Vezi mașina</a>
+    </div>
+  </div>`;
+}
+function renderHome(){
+  const L = listed(), av = L.filter(c => !isSold(c));
+  let feat = av.filter(c => c.featured);
+  if (!feat.length) feat = av.slice(0, 3);
+  heroI = Math.min(heroI, Math.max(0, feat.length - 1));
+  const counts = {};
+  av.forEach(c => counts[c.body] = (counts[c.body] || 0) + 1);
+  const bodies = Object.keys(counts).sort((a,b) => (BODY_ORDER.indexOf(a) + 99) % 99 - (BODY_ORDER.indexOf(b) + 99) % 99);
+  const recent = [...av].sort((a,b) => a.added < b.added ? 1 : -1).slice(0, 6);
+  const t = todayInfo();
+
+  app.innerHTML = `
+    <section class="wrap intro">
+      <h1 class="display h1">${esc(CONFIG.headline)}</h1>
+      <p class="lead">${plural(av.length)} în stoc acum, în ${esc(CONFIG.city)}. Programează un test drive sau scrie-ne pe WhatsApp.</p>
+    </section>
+    ${feat.length ? `<section class="wrap hero" id="hero" aria-label="Mașini recomandate">${heroHTML(feat, heroI, firstHome)}</section>` : ""}
+    <section class="wrap block">
+      <div class="block-head"><h2 class="h2">Caută după caroserie</h2></div>
+      <div class="bodychips">${bodies.map(b => `<a class="bodychip" href="#/masini?caroserie=${slugify(b)}">${bodyIcon(b)}<strong>${esc(b)}</strong><span>${plural(counts[b])}</span></a>`).join("")}</div>
+    </section>
+    <section class="wrap block">
+      <div class="block-head"><h2 class="h2">Intrate recent</h2><a class="link" href="#/masini">Tot stocul (${av.length})</a></div>
+      <div class="grid">${recent.map(card).join("")}</div>
+    </section>
+    <section class="visit">
+      <div class="wrap visit-grid">
+        <div>
+          <h2 class="h2">Vino să le vezi în parc</h2>
+          <p>${esc(CONFIG.address)}, ${esc(CONFIG.city)}</p>
+          <div class="btns"><a class="btn btn-ghost" href="${mapsHref()}" target="_blank" rel="noopener">${I.pin} Indicații rutiere</a></div>
+        </div>
+        <div>
+          <span class="status"><span class="dot${t.open ? " on" : ""}"></span>${t.text}</span>
+          ${hoursList()}
+        </div>
+        <div>
+          <span class="status">Răspundem repede</span>
+          <p>Sună-ne sau trimite un mesaj pe WhatsApp, de obicei răspundem în aceeași oră.</p>
+          <div class="btns"><a class="btn btn-blue" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} WhatsApp</a></div>
+        </div>
+      </div>
+    </section>`;
+  firstHome = false;
+
+  const heroEl = $("#hero");
+  if (!heroEl) return;
+  const go = d => { heroI = (heroI + d + feat.length) % feat.length; heroEl.innerHTML = heroHTML(feat, heroI, false); bindHero(); };
+  function bindHero(){
+    $$("[data-hero]", heroEl).forEach(b => b.onclick = () => go(+b.dataset.hero));
+    const st = $(".hero-stage", heroEl);
+    if (st && feat.length > 1) swipe(st, () => go(1), () => go(-1));
+  }
+  bindHero();
+  document.title = `${CONFIG.name} — ${CONFIG.tagline}`;
+}
+
+/* ---------- List ---------- */
+const PRICE_STEPS = [5000, 7500, 10000, 12500, 15000, 20000];
+function renderList(params){
+  const F = { caroserie:"", marca:"", combustibil:"", cutie:"", pretmax:"", anmin:"", promo:"", sort:"noi" };
+  for (const k in F) if (params.get(k)) F[k] = params.get(k);
+  const L = listed();
+  const avCount = L.filter(c => !isSold(c)).length;
+  const bodies = uniq(L.map(c => c.body)).sort((a,b) => BODY_ORDER.indexOf(a) - BODY_ORDER.indexOf(b));
+  const brands = uniq(L.map(c => c.brand)).sort((a,b) => a.localeCompare(b, "ro"));
+  const fuels = uniq(L.map(c => c.fuel));
+  const boxes = uniq(L.map(c => c.gearbox));
+  const years = L.map(c => c.year);
+  const yMin = Math.min(...years), yMax = Math.max(...years);
+  const chipGroup = (key, vals) => `<div class="chips"><button class="chip" data-f="${key}" data-v="" aria-pressed="${!F[key]}">Toate</button>${vals.map(v => `<button class="chip" data-f="${key}" data-v="${slugify(v)}" aria-pressed="${F[key] === slugify(v)}">${esc(v)}</button>`).join("")}</div>`;
+
+  app.innerHTML = `
+    <section class="wrap page-head"><h1 class="display h1">Stoc</h1><p class="lead" id="count"></p></section>
+    <section class="wrap list-layout">
+      <aside class="filters" id="filters" aria-label="Filtre">
+        <div class="fgroup"><h2>Caroserie</h2>${chipGroup("caroserie", bodies)}</div>
+        <div class="fgroup"><h2><label for="f-marca">Marcă</label></h2><select class="sel" id="f-marca" data-s="marca"><option value="">Toate mărcile</option>${brands.map(b => `<option value="${slugify(b)}"${F.marca === slugify(b) ? " selected" : ""}>${esc(b)}</option>`).join("")}</select></div>
+        <div class="fgroup"><h2>Combustibil</h2>${chipGroup("combustibil", fuels)}</div>
+        <div class="fgroup"><h2>Cutie de viteze</h2>${chipGroup("cutie", boxes)}</div>
+        <div class="fgroup"><h2><label for="f-pret">Preț maxim</label></h2><select class="sel" id="f-pret" data-s="pretmax"><option value="">Orice preț</option>${PRICE_STEPS.map(p => `<option value="${p}"${F.pretmax == p ? " selected" : ""}>Până la ${eur(p)}</option>`).join("")}</select></div>
+        <div class="fgroup"><h2><label for="f-an">An minim</label></h2><select class="sel" id="f-an" data-s="anmin"><option value="">Orice an</option>${Array.from({length: yMax - yMin + 1}, (_, i) => yMax - i).map(y => `<option value="${y}"${F.anmin == y ? " selected" : ""}>Din ${y}</option>`).join("")}</select></div>
+        <div class="fgroup"><label class="check"><input type="checkbox" id="f-promo"${F.promo ? " checked" : ""}> Doar mașini la promoție</label></div>
+        <button class="freset" id="freset" type="button">Resetează filtrele</button>
+        <button class="btn btn-blue filters-done" id="fdone" type="button">Vezi rezultatele</button>
+      </aside>
+      <div>
+        <div class="list-tools">
+          <button class="btn btn-ghost filters-toggle" id="ftoggle" type="button" aria-expanded="false" aria-controls="filters">${I.sliders} Filtre <span class="fcount" id="fcount" hidden></span></button>
+          <label class="sortlab"><span class="sort-txt">Sortează</span> <select class="sel" id="f-sort" aria-label="Sortează">
+            <option value="noi">Cele mai noi</option><option value="pret-asc">Preț crescător</option><option value="pret-desc">Preț descrescător</option><option value="km">Kilometraj mic</option><option value="an">An recent</option>
+          </select></label>
+        </div>
+        <div class="grid" id="results" aria-live="polite"></div>
+      </div>
+    </section>`;
+
+  const panel = $("#filters"), results = $("#results"), count = $("#count"), fcount = $("#fcount"), toggle = $("#ftoggle");
+  $("#f-sort").value = F.sort;
+
+  function sortCars(r){
+    const s = F.sort;
+    if (s === "noi") return r;
+    const key = { "pret-asc": c => c.price, "pret-desc": c => -c.price, "km": c => c.km, "an": c => -c.year }[s];
+    return [...r].sort((a,b) => (isSold(a) - isSold(b)) || key(a) - key(b));
+  }
+  function apply(){
+    let r = L.filter(c =>
+      (!F.caroserie || slugify(c.body) === F.caroserie) &&
+      (!F.marca || slugify(c.brand) === F.marca) &&
+      (!F.combustibil || slugify(c.fuel) === F.combustibil) &&
+      (!F.cutie || slugify(c.gearbox) === F.cutie) &&
+      (!F.pretmax || c.price <= +F.pretmax) &&
+      (!F.anmin || c.year >= +F.anmin) &&
+      (!F.promo || (c.isPromo && !isSold(c))));
+    r = sortCars(r);
+    const active = ["caroserie","marca","combustibil","cutie","pretmax","anmin","promo"].filter(k => F[k]).length;
+    if (!active) count.textContent = avCount === 1 ? "1 mașină disponibilă acum" : `${plural(avCount)} disponibile acum`;
+    else count.textContent = r.length === 0 ? "Nicio mașină găsită" : r.length === 1 ? "1 mașină găsită" : `${plural(r.length)} găsite`;
+    fcount.hidden = !active; fcount.textContent = active;
+    results.innerHTML = r.length ? r.map(card).join("") : `
+      <div class="empty"><h3>Nicio mașină nu se potrivește filtrelor</h3>
+      <p>Schimbă filtrele sau spune-ne ce mașină cauți. Uneori o avem deja pe drum spre parc.</p>
+      <div class="btns"><button class="btn btn-ghost" type="button" data-reset>Resetează filtrele</button><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} Spune-ne ce cauți</a></div></div>`;
+    const rb = $("[data-reset]", results); if (rb) rb.onclick = reset;
+    const qs = new URLSearchParams();
+    for (const k in F) if (F[k] && !(k === "sort" && F[k] === "noi")) qs.set(k, F[k]);
+    try { history.replaceState(null, "", "#/masini" + (qs.toString() ? "?" + qs : "")); } catch (e) {}
+  }
+  function reset(){
+    Object.assign(F, { caroserie:"", marca:"", combustibil:"", cutie:"", pretmax:"", anmin:"", promo:"" });
+    $$("[data-f]", panel).forEach(b => b.setAttribute("aria-pressed", b.dataset.v === ""));
+    $$("[data-s]", panel).forEach(s => s.value = "");
+    $("#f-promo").checked = false;
+    apply();
+  }
+  $$("[data-f]", panel).forEach(btn => btn.onclick = () => {
+    const k = btn.dataset.f; F[k] = btn.dataset.v;
+    $$(`[data-f="${k}"]`, panel).forEach(b => b.setAttribute("aria-pressed", b.dataset.v === F[k]));
+    apply();
+  });
+  $$("[data-s]", panel).forEach(s => s.onchange = () => { F[s.dataset.s] = s.value; apply(); });
+  $("#f-promo").onchange = e => { F.promo = e.target.checked ? "1" : ""; apply(); };
+  $("#f-sort").onchange = e => { F.sort = e.target.value; apply(); };
+  $("#freset").onclick = reset;
+  const setOpen = o => { panel.classList.toggle("open", o); toggle.setAttribute("aria-expanded", o); };
+  toggle.onclick = () => setOpen(!panel.classList.contains("open"));
+  $("#fdone").onclick = () => { setOpen(false); toggle.scrollIntoView({ block:"start" }); };
+  apply();
+  document.title = `Stoc mașini — ${CONFIG.name}`;
+}
+
+/* ---------- Detail ---------- */
+let gal = { car:null, imgs:[], i:0 };
+function slideContent(k){
+  const it = gal.imgs[k], c = gal.car;
+  return it.u ? `<img src="${esc(it.u)}" alt="${esc(c.title)} ${c.year} – poza ${k+1}">` : carSVG(c, it.v, `${c.title} ${c.year} – imagine ${k+1}`);
+}
+function renderDetail(slug){
+  const car = CARS.find(c => c.slug === slug && c.status !== "Ascuns")
+    || CARS.find(c => c.status !== "Ascuns" && slug.endsWith("-" + c.id.slice(-5).toLowerCase()));
+  if (!car) {
+    app.innerHTML = `<section class="wrap page-head"><h1 class="display h1">Mașina nu mai este în stoc</h1><p class="lead">Poate s-a vândut între timp. Uite ce avem acum în parc.</p><p style="margin-top:22px"><a class="btn btn-blue" href="#/masini">Vezi stocul</a></p></section>`;
+    document.title = `Mașina nu mai este în stoc — ${CONFIG.name}`;
+    return;
+  }
+  const sold = isSold(car);
+  gal = { car, i:0, imgs: car.photos.length ? car.photos.map(u => ({ u })) : ["side","mirror","zoom"].map(v => ({ v })) };
+  const n = gal.imgs.length;
+  const pool = listed().filter(c => !isSold(c) && c.id !== car.id);
+  const similar = [...pool].sort((a,b) => {
+    const sa = (a.body === car.body ? 0 : 1) + (a.brand === car.brand ? 0 : 0.5);
+    const sb = (b.body === car.body ? 0 : 1) + (b.brand === car.brand ? 0 : 0.5);
+    return sa - sb || Math.abs(a.price - car.price) - Math.abs(b.price - car.price);
+  }).slice(0, 3);
+  const t = todayInfo();
+  const specRows = [
+    ["Marcă", car.brand], ["An fabricație", car.year], ["Kilometraj", num(car.km) + " km"], ["Putere", car.hp + " CP"],
+    ["Capacitate cilindrică", num(car.cc) + " cm³"], ["Combustibil", car.fuel], ["Cutie de viteze", car.gearbox], ["Caroserie", car.body],
+    ["Culoare", car.color && car.color.name], ["Normă poluare", car.euro]
+  ].filter(r => r[1]);
+  const similarHTML = similar.length ? `<section class="wrap block"><div class="block-head"><h2 class="h2">${sold ? "Mașini asemănătoare din stoc" : "Te-ar mai putea interesa"}</h2><a class="link" href="#/masini">Tot stocul</a></div><div class="grid">${similar.map(card).join("")}</div></section>` : "";
+
+  app.innerHTML = `
+    <div class="wrap crumbs"><a class="back" href="#/masini">${I.left} Înapoi la stoc</a></div>
+    ${sold ? `<div class="wrap"><div class="soldbanner"><strong>Această mașină a fost vândută.</strong> Mai jos găsești mașini asemănătoare din stoc, sau scrie-ne ce cauți.</div></div>` : ""}
+    <section class="wrap detail">
+      <div class="gallery">
+        <div class="gal-main" id="galmain" role="button" tabindex="0" aria-label="Deschide galeria pe tot ecranul">
+          <div class="slide" id="slide">${slideContent(0)}</div>
+          ${n > 1 ? `<button class="gal-arrow prev" data-g="-1" aria-label="Poza anterioară">${I.left}</button><button class="gal-arrow next" data-g="1" aria-label="Poza următoare">${I.right}</button>` : ""}
+          <span class="gal-count" id="galcount">1 / ${n}</span>
+        </div>
+        ${n > 1 ? `<div class="gal-thumbs">${gal.imgs.map((_, k) => `<button class="thumb" data-t="${k}" aria-label="Poza ${k+1}" aria-current="${k === 0}">${slideContent(k)}</button>`).join("")}</div>` : ""}
+        ${car.photos.length ? "" : `<p class="note">Imagini ilustrative. Pozele reale ale mașinii apar aici după ce sunt încărcate.</p>`}
+      </div>
+      <aside class="panel">
+        <p class="panel-sub">${esc(car.body)}${badge(car, true)}</p>
+        <h1 class="display h-car">${esc(car.title)}</h1>
+        <ul class="specs specs-lg">${specItems(car)}</ul>
+        ${priceTag(car, true)}
+        <div class="panel-cta">
+          <a class="btn btn-wa" href="${waHref(car)}" target="_blank" rel="noopener">${I.chat} ${sold ? "Cere o mașină asemănătoare" : "Întreabă pe WhatsApp"}</a>
+          <a class="btn btn-blue" href="${telHref()}">${I.phone} Sună ${esc(CONFIG.phoneDisplay)}</a>
+          <button class="btn btn-ghost" id="share" type="button">${I.share} Trimite cuiva</button>
+        </div>
+        <p class="panel-note">${I.pin}<span>${esc(CONFIG.address)}, ${esc(CONFIG.city)}. ${t.text}.</span></p>
+      </aside>
+    </section>
+    ${sold ? similarHTML : ""}
+    <section class="wrap detail-more">
+      <div><h2 class="h2">Fișă tehnică</h2><dl class="spec">${specRows.map(r => `<div><dt>${r[0]}</dt><dd>${esc(r[1])}</dd></div>`).join("")}</dl></div>
+      <div>
+        ${car.features.length ? `<h2 class="h2">Dotări</h2><ul class="feat">${car.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+        ${car.description && !sold ? `<h2 class="h2">Descriere</h2><p class="desc">${esc(car.description)}</p>` : ""}
+      </div>
+    </section>
+    ${sold ? "" : similarHTML}`;
+
+  const main = $("#galmain");
+  const show = k => {
+    gal.i = (k + n) % n;
+    $("#slide").innerHTML = slideContent(gal.i);
+    $("#galcount").textContent = `${gal.i + 1} / ${n}`;
+    $$(".thumb").forEach(b => b.setAttribute("aria-current", +b.dataset.t === gal.i));
+  };
+  $$("[data-g]", main).forEach(b => b.onclick = e => { e.stopPropagation(); show(gal.i + +b.dataset.g); });
+  $$(".thumb").forEach(b => b.onclick = () => show(+b.dataset.t));
+  if (n > 1) swipe(main, () => show(gal.i + 1), () => show(gal.i - 1));
+  main.onclick = () => { if (main.dataset.moved) { main.dataset.moved = ""; return; } openLB(show); };
+  main.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLB(show); } };
+  $("#share").onclick = () => shareCar(car);
+
+  mbar.innerHTML = `<a class="btn btn-blue" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref(car)}" target="_blank" rel="noopener">${I.chat} WhatsApp</a>`;
+  document.body.classList.add("has-mbar");
+  document.title = sold ? `${car.title} (vândută) — ${CONFIG.name}` : `${car.title} ${car.year} – ${eur(car.price)} | ${CONFIG.name}`;
+}
+
+async function shareCar(car){
+  const url = location.href;
+  try { if (navigator.share) { await navigator.share({ title: `${car.title} ${car.year}`, text: `${car.title}, ${eur(car.price)}`, url }); return; } }
+  catch (e) { if (e && e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(url); toast("Link copiat. Îl poți lipi în orice conversație."); }
+  catch (e) { toast("Copiază linkul din bara de adrese."); }
+}
+function toast(msg){
+  const t = document.createElement("div");
+  t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+  document.body.appendChild(t); setTimeout(() => t.remove(), 2600);
+}
+
+/* ---------- Lightbox ---------- */
+let lbSync = null, lbReturn = null;
+function drawLB(){
+  const n = gal.imgs.length;
+  lb.innerHTML = `<div class="lb-top"><span>${gal.i + 1} / ${n}</span><button class="lb-close" id="lbclose" aria-label="Închide galeria">${I.close}</button></div>
+    <div class="lb-stage" id="lbstage"><div class="lb-img">${slideContent(gal.i)}</div>
+    ${n > 1 ? `<button class="gal-arrow prev" data-l="-1" aria-label="Poza anterioară">${I.left}</button><button class="gal-arrow next" data-l="1" aria-label="Poza următoare">${I.right}</button>` : ""}</div>`;
+  $("#lbclose").onclick = closeLB;
+  $$("[data-l]", lb).forEach(b => b.onclick = () => lbGo(+b.dataset.l));
+  if (n > 1) swipe($("#lbstage"), () => lbGo(1), () => lbGo(-1));
+}
+function lbGo(d){ const n = gal.imgs.length; gal.i = (gal.i + d + n) % n; if (lbSync) lbSync(gal.i); drawLB(); $("#lbclose").focus(); }
+function openLB(sync){ lbSync = sync; lbReturn = document.activeElement; lb.hidden = false; document.body.style.overflow = "hidden"; drawLB(); $("#lbclose").focus(); }
+function closeLB(){ if (lb.hidden) return; lb.hidden = true; lb.innerHTML = ""; document.body.style.overflow = ""; if (lbReturn && lbReturn.focus) lbReturn.focus(); }
+document.addEventListener("keydown", e => {
+  if (lb.hidden) return;
+  if (e.key === "Escape") closeLB();
+  else if (e.key === "ArrowRight") lbGo(1);
+  else if (e.key === "ArrowLeft") lbGo(-1);
+});
+
+/* ---------- About / Contact / 404 ---------- */
+function renderAbout(){
+  const years = new Date().getFullYear() - CONFIG.since;
+  app.innerHTML = `
+    <section class="wrap page-head"><h1 class="display h1">Despre noi</h1></section>
+    <section class="wrap about">
+      <div>
+        <p class="lead" style="color:var(--ink);margin-top:0">În parc din ${CONFIG.since}, de ${years} de ani.</p>
+        ${CONFIG.about.map(p => `<p>${esc(p)}</p>`).join("")}
+        <p style="margin-top:22px"><a class="btn btn-blue" href="#/masini">Vezi mașinile din stoc</a></p>
+      </div>
+      <div class="sticker">
+        <h2 class="sticker-title" style="font-size:24px">Ce primești la noi</h2>
+        <ul>${CONFIG.promises.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+      </div>
+    </section>`;
+  document.title = `Despre noi — ${CONFIG.name}`;
+}
+function renderContact(){
+  const t = todayInfo();
+  app.innerHTML = `
+    <section class="wrap page-head"><h1 class="display h1">Contact</h1><p class="lead">Sună-ne, scrie-ne pe WhatsApp sau treci pe la parc în timpul programului.</p></section>
+    <section class="wrap contact">
+      <div>
+        <div class="cbox"><h2>Telefon și WhatsApp</h2><p>${esc(CONFIG.phoneDisplay)}</p>
+          <div class="btns"><a class="btn btn-blue" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} WhatsApp</a></div></div>
+        <div class="cbox"><h2>Adresa parcului auto</h2><p>${esc(CONFIG.address)}, ${esc(CONFIG.city)}</p>
+          <div class="btns"><a class="btn btn-ghost" href="${mapsHref()}" target="_blank" rel="noopener">${I.pin} Deschide în Google Maps</a></div></div>
+        ${CONFIG.email ? `<div class="cbox"><h2>Email</h2><p><a href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a></p></div>` : ""}
+      </div>
+      <div>
+        <div class="cbox"><h2>Program</h2><span class="status"><span class="dot${t.open ? " on" : ""}"></span>${t.text}</span>${hoursList()}</div>
+        <div class="cbox"><h2>Date firmă</h2><p>${esc(CONFIG.legalName)}<br>CUI ${esc(CONFIG.cui)}<br>Reg. Com. ${esc(CONFIG.regCom)}</p></div>
+      </div>
+    </section>`;
+  document.title = `Contact — ${CONFIG.name}`;
+}
+function render404(){
+  app.innerHTML = `<section class="wrap page-head"><h1 class="display h1">Pagina nu există</h1><p class="lead">Linkul e greșit sau pagina a fost mutată.</p><p style="margin-top:22px"><a class="btn btn-blue" href="#/masini">Vezi stocul</a></p></section>`;
+  document.title = `Pagina nu există — ${CONFIG.name}`;
+}
+
+/* ---------- Chrome: header + footer ---------- */
+function renderChrome(){
+  $("#brand").innerHTML = `<span class="brand-mark" aria-hidden="true">${esc(CONFIG.mark)}</span>${esc(CONFIG.name)}`;
+  const call = $("#hdrcall");
+  call.href = telHref();
+  call.innerHTML = `${I.phone}<span class="lbl-long">${esc(CONFIG.phoneDisplay)}</span><span class="lbl-short">Sună</span>`;
+  const social = [CONFIG.facebook && `<a href="${esc(CONFIG.facebook)}" target="_blank" rel="noopener">Facebook</a>`, CONFIG.instagram && `<a href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener">Instagram</a>`].filter(Boolean).join(" · ");
+  $("#footer").innerHTML = `
+    <div class="wrap foot-grid">
+      <div><div class="brand"><span class="brand-mark" aria-hidden="true">${esc(CONFIG.mark)}</span>${esc(CONFIG.name)}</div><p>${esc(CONFIG.tagline)}</p>${social ? `<p>${social}</p>` : ""}</div>
+      <div><h3>Program</h3>${hoursList()}</div>
+      <div><h3>Contact</h3><p>${esc(CONFIG.address)}, ${esc(CONFIG.city)}</p><p><a href="${telHref()}">${esc(CONFIG.phoneDisplay)}</a></p><p><a href="${waHref()}" target="_blank" rel="noopener">WhatsApp</a></p></div>
+      <div><h3>Date firmă</h3><p>${esc(CONFIG.legalName)}<br>CUI ${esc(CONFIG.cui)}<br>Reg. Com. ${esc(CONFIG.regCom)}</p><p><a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener">ANPC – Soluționarea alternativă a litigiilor</a></p></div>
+    </div>
+    <div class="wrap foot-bottom">© ${new Date().getFullYear()} ${esc(CONFIG.legalName)}. Prețurile includ TVA unde este cazul.</div>`;
+}
+
+/* ---------- Pornire: încarcă stocul din Airtable prin /api/cars ---------- */
+async function boot(){
+  renderChrome();
+  app.innerHTML = `<section class="wrap page-head"><p class="lead">Se încarcă stocul…</p></section>`;
+  const local = location.protocol === "file:";
+  try {
+    if (local) throw new Error("preview local");
+    const res = await fetch("/api/cars", { headers: { accept: "application/json" } });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    CARS = await res.json();
+  } catch (e) {
+    if (local) { CARS = SAMPLE_CARS; }
+    else {
+      console.error("Stocul nu s-a putut încărca:", e);
+      app.innerHTML = `<section class="wrap page-head"><h1 class="display h1">Stocul nu s-a putut încărca</h1><p class="lead">Reîncarcă pagina peste un minut sau sună-ne, îți spunem ce mașini avem în parc.</p><p style="margin-top:22px"><a class="btn btn-blue" href="${telHref()}">${I.phone} Sună ${esc(CONFIG.phoneDisplay)}</a></p></section>`;
+      return;
+    }
+  }
+  prepare();
+  window.addEventListener("hashchange", render);
+  render();
+}
+boot();
+</script>
+</body>
+</html>
