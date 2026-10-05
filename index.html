@@ -3,33 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Auto Select — Mașini rulate verificate</title>
-<meta name="description" content="Mașini rulate verificate, cu acte și istoric. Vezi stocul, prețurile și promoțiile.">
+<title>ADN Auto Parc — Mașini rulate</title>
+<meta name="description" content="Stocul ADN Auto Parc: mașini rulate, cu prețuri și detalii pentru fiecare mașină.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230F1B2D'/%3E%3Cpath d='M15 53 L32 14 L49 53' fill='none' stroke='%23fff' stroke-width='8.5' stroke-linejoin='round'/%3E%3Cpath d='M16.5 42.5 C 23 34, 41 32.5, 47.5 42.5' fill='none' stroke='%23FF5A1F' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400..800&family=Archivo:wght@400..700&display=swap" rel="stylesheet">
 <style>
 :root{
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
-  --paper:#F1F2EE; --surface:#FFFFFF; --ink:#0F1B2D; --muted:#586376; --line:#D9DCD5;
-  --blue:#0B4EA2; --blue-ink:#FFFFFF; --sticker:#FFD43B; --red:#C8102E; --green:#1F7A4D;
-  --stage:#E2E5DF; --stage2:#CDD3CA; --foot:#0F1B2D; --foot-ink:#C9D1DC;
-  --font:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+  --paper:#F4F4F1; --surface:#FFFFFF; --ink:#0F1B2D; --muted:#566174; --line:#DCDDD7;
+  --accent:#FF5A1F; --on-accent:#0F1B2D; --green:#1F7A4D; --stage:#E4E6E1; --stage2:#D0D5CC;
+  --logo-tile:#0F1B2D; --logo-legs:#FFFFFF; --foot:#0F1B2D; --foot-ink:#C4CCD8;
+  --display:"Unbounded","Archivo","Helvetica Neue",sans-serif;
+  --font:"Archivo","Helvetica Neue",Arial,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0D131B; --surface:#151E29; --ink:#ECEFF3; --muted:#9AA6B5; --line:#273343;
-    --blue:#5B92F0; --blue-ink:#08111D; --red:#FF5A6E; --green:#4CC38A;
-    --stage:#1B2633; --stage2:#243243; --foot:#080D13; --foot-ink:#AEB8C5; color-scheme:dark;
+    --paper:#0C121A; --surface:#141C27; --ink:#EDF0F4; --muted:#9AA5B4; --line:#263241;
+    --green:#4CC38A; --stage:#1A2431; --stage2:#223041; --logo-tile:#FFFFFF; --logo-legs:#0F1B2D;
+    --foot:#080C12; --foot-ink:#AAB4C2; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0D131B; --surface:#151E29; --ink:#ECEFF3; --muted:#9AA6B5; --line:#273343;
-  --blue:#5B92F0; --blue-ink:#08111D; --red:#FF5A6E; --green:#4CC38A;
-  --stage:#1B2633; --stage2:#243243; --foot:#080D13; --foot-ink:#AEB8C5; color-scheme:dark;
+  --paper:#0C121A; --surface:#141C27; --ink:#EDF0F4; --muted:#9AA5B4; --line:#263241;
+  --green:#4CC38A; --stage:#1A2431; --stage2:#223041; --logo-tile:#FFFFFF; --logo-legs:#0F1B2D;
+  --foot:#080C12; --foot-ink:#AAB4C2; color-scheme:dark;
 }
 html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px)}
 *,*::before,*::after{box-sizing:inherit}
@@ -37,124 +39,70 @@ body{margin:0;min-height:100%;background:var(--paper);color:var(--ink);font-fami
 img{max-width:100%;display:block}
 a{color:inherit}
 [hidden]{display:none !important}
-:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
 .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
-.display{font-stretch:125%;font-weight:800;letter-spacing:-.01em;line-height:1.02}
-.h1{font-size:clamp(32px,5.2vw,58px);margin:0;max-width:18ch}
-.h2{font-size:clamp(22px,2.6vw,28px);font-stretch:112%;font-weight:750;margin:0;line-height:1.15}
-.lead{font-size:18px;color:var(--muted);max-width:60ch;margin:14px 0 0}
+.h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,4.2vw,44px);line-height:1.08;letter-spacing:-.02em;margin:0}
+.h2{font-family:var(--display);font-weight:600;font-size:clamp(19px,2.2vw,23px);line-height:1.2;letter-spacing:-.01em;margin:0}
+.lead{font-size:17px;color:var(--muted);max-width:60ch;margin:10px 0 0}
 
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:10px;font:inherit;font-weight:700;font-size:16px;text-decoration:none;border:0;cursor:pointer;white-space:nowrap}
-.btn-blue{background:var(--blue);color:var(--blue-ink)}
+.btn-accent{background:var(--accent);color:var(--on-accent)}
 .btn-wa{background:#1C9E52;color:#fff}
 .btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
-.btn-dark{background:#111;color:var(--sticker);width:100%}
-.link{font-weight:700;color:var(--blue);text-decoration:none}
-.link:hover{text-decoration:underline}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.link{font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
 
 /* Header */
 .site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
-.hdr{display:flex;align-items:center;gap:24px;min-height:68px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-stretch:125%;font-weight:800;font-size:20px;letter-spacing:-.01em}
-.brand-mark{width:34px;height:26px;border-radius:4px;background:var(--sticker);color:#111;display:grid;place-items:center;font-size:12px;font-weight:800;transform:rotate(-4deg)}
+.hdr{display:flex;align-items:center;gap:24px;min-height:70px}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
+.brand svg{flex:0 0 auto}
+.wm{font-family:var(--display);font-size:19px;font-weight:400;letter-spacing:-.02em;white-space:nowrap}
+.wm b{font-weight:800}
 .nav{display:flex;gap:28px;margin-left:auto}
 .nav a{text-decoration:none;font-weight:600;font-size:15px;color:var(--muted);padding:10px 0}
-.nav a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--blue)}
+.nav a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
 .nav a:hover{color:var(--ink)}
 .hdr-call{min-height:44px;padding:0 16px}
 .lbl-short{display:none}
 
-/* Home */
-.intro{padding:40px 20px 24px}
-.hero{padding-bottom:16px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);align-items:center}
-.hero-stage{position:relative;aspect-ratio:16/10;border-radius:18px;overflow:hidden;background:var(--stage);touch-action:pan-y}
-.hero-stage > svg,.hero-stage > img{width:100%;height:100%;object-fit:cover}
-.hero-nav{position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:4px;background:var(--surface);border-radius:999px;padding:4px}
-.round{width:40px;height:40px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
-.round:hover{background:var(--stage)}
-.hero-count{font-weight:650;font-size:14px;min-width:44px;text-align:center}
-.sticker{position:relative;z-index:2;margin-left:-64px;background:var(--sticker);color:#111;border-radius:6px;padding:24px 26px 26px;transform:rotate(-1.2deg);box-shadow:0 22px 44px -20px rgba(0,0,0,.45)}
-.sticker.enter{animation:slap .55s cubic-bezier(.2,.9,.3,1.15) .15s both}
-@keyframes slap{from{opacity:0;transform:rotate(-7deg) translateY(-18px) scale(1.04)}to{opacity:1;transform:rotate(-1.2deg)}}
-.sticker-kicker{margin:0 0 6px;font-size:14px;font-weight:600;opacity:.72}
-.sticker-title{margin:0;font-stretch:118%;font-weight:800;font-size:clamp(24px,2.6vw,32px);line-height:1.08}
-.sticker-specs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 16px;margin:18px 0;padding:14px 0;border-top:2px solid #111;border-bottom:2px solid #111}
-.sticker-specs dt{font-size:12.5px;opacity:.7}
-.sticker-specs dd{margin:0;font-weight:700;font-size:15px}
-.sticker-price{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.sp-now{font-stretch:125%;font-weight:800;font-size:clamp(38px,4vw,50px);line-height:1}
-.sticker-price s{color:#A1001C;font-weight:700;font-size:20px}
-
-.block{padding:40px 20px 8px}
-.block-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:18px;flex-wrap:wrap}
-.bodychips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.bodychip{display:flex;flex-direction:column;gap:4px;padding:14px 16px 16px;border-radius:12px;background:var(--surface);border:1px solid var(--line);text-decoration:none}
-.bodychip:hover{border-color:var(--ink)}
-.bodychip svg{width:88px;height:auto;color:var(--ink);margin-bottom:6px}
-.bodychip strong{font-weight:700}
-.bodychip span{color:var(--muted);font-size:14px}
-
-.visit{background:var(--surface);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:48px;padding:44px 0}
-.visit-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;align-items:start}
-.visit p{margin:8px 0 0;color:var(--muted)}
-.visit .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.status{display:inline-flex;align-items:center;gap:8px;font-weight:650;color:var(--ink)}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
-.dot.on{background:var(--green)}
-.hours{list-style:none;padding:0;margin:10px 0 0}
-.hours li{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--line)}
-.hours li.today{font-weight:700}
-
-/* Cards */
+/* List */
+.page-head{padding:34px 20px 18px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.toolbar{display:flex;flex-direction:column;gap:12px;margin-bottom:22px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chip .n{color:var(--muted);font-weight:500;margin-left:4px}
+.chip[aria-pressed="true"] .n{color:inherit;opacity:.7}
+.selects{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sel{min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;padding:0 12px;min-width:150px}
+.freset{background:none;border:0;padding:8px 4px;font:inherit;font-weight:700;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.empty{grid-column:1/-1;background:var(--surface);border:1.5px dashed var(--line);border-radius:14px;padding:32px}
+.empty h3{margin:0 0 6px;font-size:20px}
+.empty p{margin:0 0 18px;color:var(--muted)}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Card */
 .card{background:var(--surface);border-radius:14px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;border:1px solid var(--line)}
 .card:hover{border-color:var(--ink)}
-.card-media{position:relative;aspect-ratio:16/10;background:var(--stage)}
+.card-media{position:relative;aspect-ratio:4/3;background:var(--stage)}
 .card-media > svg,.card-media > img{width:100%;height:100%;object-fit:cover}
 .card.is-sold .card-media > svg,.card.is-sold .card-media > img{filter:grayscale(1);opacity:.6}
 .badge{position:absolute;top:12px;left:12px;font-weight:700;font-size:13px;padding:4px 11px;border-radius:999px}
 .badge-inline{position:static;display:inline-block}
-.badge-promo{background:var(--red);color:#fff}
-.badge-res{background:var(--sticker);color:#111}
+.badge-res{background:var(--accent);color:var(--on-accent)}
 .badge-sold{background:#111;color:#fff}
-.card-body{padding:16px 16px 0;flex:1}
+.card-body{padding:16px 16px 14px;flex:1;display:flex;flex-direction:column}
 .card-title{font-size:17px;font-weight:700;margin:0;line-height:1.25}
-.card-sub{margin:3px 0 0;color:var(--muted);font-size:14px}
-.specs{display:flex;flex-wrap:wrap;gap:4px 14px;list-style:none;padding:0;margin:10px 0 0;font-size:14px;color:var(--muted)}
-.tag{margin:14px 16px 16px;background:var(--sticker);color:#111;border-radius:8px;padding:10px 14px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.tag-price{font-stretch:125%;font-weight:800;font-size:22px;line-height:1.1}
-.tag-old{color:#A1001C;font-weight:700;font-size:15px}
-.tag-save{margin-left:auto;background:#111;color:var(--sticker);font-weight:700;font-size:13px;border-radius:999px;padding:2px 9px;align-self:center}
-.tag-sold{background:var(--stage);color:var(--red)}
-.tag-lg{margin:20px 0 0;padding:16px 18px}
-.tag-lg .tag-price{font-size:clamp(34px,4vw,46px)}
-.tag-lg .tag-old{font-size:18px}
-
-/* List */
-.page-head{padding:36px 20px 18px}
-.list-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
-.filters{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;position:sticky;top:calc(env(safe-area-inset-top,0px) + 86px)}
-.fgroup{margin:0 0 18px}
-.fgroup h2{font-size:14px;font-weight:700;margin:0 0 8px}
-.chips{display:flex;flex-wrap:wrap;gap:6px}
-.chip{border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:36px}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.sel{width:100%;min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;padding:0 10px}
-.check{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;cursor:pointer}
-.check input{width:20px;height:20px;accent-color:var(--blue)}
-.freset{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--blue);cursor:pointer}
-.filters-done{display:none;width:100%;margin-top:6px}
-.list-tools{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
-.filters-toggle{display:none;min-height:44px}
-.fcount{background:var(--blue);color:var(--blue-ink);border-radius:999px;font-size:12px;padding:1px 7px}
-.sortlab{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;margin-left:auto}
-.sortlab .sel{width:auto}
-.empty{grid-column:1/-1;background:var(--surface);border:1.5px dashed var(--line);border-radius:14px;padding:32px}
-.empty h3{margin:0 0 6px;font-size:20px}
-.empty p{margin:0 0 18px;color:var(--muted)}
-.empty .btns{display:flex;gap:10px;flex-wrap:wrap}
+.specs{display:flex;flex-wrap:wrap;gap:4px 14px;list-style:none;padding:0;margin:8px 0 0;font-size:14px;color:var(--muted)}
+.price-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+.card-body .specs{margin-bottom:14px}
+.price{font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;line-height:1.1}
+.price-old{color:var(--muted);font-size:15px;font-weight:600}
+.price-sold{font-family:var(--display);font-weight:700;font-size:19px;color:var(--muted)}
 
 /* Detail */
 .crumbs{padding:20px 20px 12px}
@@ -162,23 +110,26 @@ a{color:inherit}
 .back:hover{color:var(--ink)}
 .soldbanner{background:var(--ink);color:var(--paper);border-radius:12px;padding:14px 18px;margin-bottom:18px}
 .detail{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:36px;align-items:start}
-.gal-main{position:relative;aspect-ratio:16/10;border-radius:16px;overflow:hidden;background:var(--stage);cursor:zoom-in;touch-action:pan-y}
+.gal-main{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--stage);cursor:zoom-in;touch-action:pan-y}
 .gal-main > .slide{position:absolute;inset:0}
 .slide > svg,.slide > img{width:100%;height:100%;object-fit:cover}
 .gal-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:var(--surface);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.18)}
 .gal-arrow.prev{left:12px}.gal-arrow.next{right:12px}
 .gal-count{position:absolute;right:12px;bottom:12px;background:rgba(0,0,0,.66);color:#fff;font-size:13px;font-weight:600;border-radius:999px;padding:3px 10px}
 .gal-thumbs{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px}
-.thumb{flex:0 0 96px;aspect-ratio:16/10;border-radius:8px;overflow:hidden;border:2px solid transparent;padding:0;background:var(--stage);cursor:pointer}
+.thumb{flex:0 0 92px;aspect-ratio:4/3;border-radius:8px;overflow:hidden;border:2px solid transparent;padding:0;background:var(--stage);cursor:pointer}
 .thumb > svg,.thumb > img{width:100%;height:100%;object-fit:cover}
-.thumb[aria-current="true"]{border-color:var(--ink)}
+.thumb[aria-current="true"]{border-color:var(--accent)}
 .note{font-size:13px;color:var(--muted);margin:8px 0 0}
-.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 86px)}
+.panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 90px)}
 .panel-sub{margin:0;color:var(--muted);font-weight:600;font-size:15px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.h-car{font-size:clamp(28px,3.4vw,40px);margin:8px 0 14px;line-height:1.05}
+.h-car{font-family:var(--display);font-weight:700;font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;margin:8px 0 14px;line-height:1.1}
 .specs-lg{font-size:15px;color:var(--ink);gap:8px}
 .specs-lg li{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-weight:600}
-.panel-cta{display:grid;gap:10px;margin-top:16px}
+.price-lg{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:22px 0 0;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.price-lg .price{font-size:clamp(32px,3.6vw,42px)}
+.price-lg .price-old{font-size:18px}
+.panel-cta{display:grid;gap:10px;margin-top:18px}
 .panel-note{display:flex;gap:8px;align-items:flex-start;color:var(--muted);font-size:14px;margin:16px 0 0}
 .panel-note svg{flex:0 0 auto;margin-top:2px}
 .detail-more{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:36px;padding-top:44px;padding-bottom:8px}
@@ -189,7 +140,8 @@ a{color:inherit}
 .feat{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:14px 0 30px}
 .feat li{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
 .desc{max-width:60ch;margin:14px 0 0;white-space:pre-line}
-
+.block{padding:44px 20px 8px}
+.block-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:18px;flex-wrap:wrap}
 .mbar{display:none;position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--surface);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));gap:10px}
 .mbar .btn{flex:1}
 
@@ -198,21 +150,28 @@ a{color:inherit}
 .lb-top{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;color:#fff;font-weight:600}
 .lb-close{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;cursor:pointer}
 .lb-stage{position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:0 12px 24px;min-height:0;touch-action:pan-y}
-.lb-img{width:min(100%,1200px);max-height:100%;aspect-ratio:16/10;border-radius:12px;overflow:hidden}
+.lb-img{width:min(100%,1200px);max-height:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden}
 .lb-img > svg,.lb-img > img{width:100%;height:100%;object-fit:contain}
 
 /* About / contact */
 .about{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start;padding-bottom:16px}
 .about p{max-width:62ch}
-.about .sticker{margin:0;transform:rotate(-1deg)}
-.about .sticker ul{margin:12px 0 0;padding-left:20px}
-.about .sticker li{margin:6px 0;font-weight:600}
+.promise{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.promise ul{margin:12px 0 0;padding-left:20px}
+.promise li{margin:8px 0;font-weight:600}
+.promise li::marker{color:var(--accent)}
 .contact{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start;padding-bottom:16px}
 .cbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
 .cbox + .cbox{margin-top:16px}
 .cbox h2{font-size:18px;margin:0 0 6px}
 .cbox p{margin:4px 0 0;color:var(--muted)}
-.cbox .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.cbox .btns{margin-top:14px}
+.status{display:inline-flex;align-items:center;gap:8px;font-weight:650;color:var(--ink)}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.dot.on{background:var(--green)}
+.hours{list-style:none;padding:0;margin:10px 0 0}
+.hours li{display:flex;justify-content:space-between;gap:16px;padding:7px 0;border-bottom:1px solid var(--line)}
+.hours li.today{font-weight:700}
 
 /* Footer */
 .site-foot{background:var(--foot);color:var(--foot-ink);margin-top:64px;padding:48px 0 28px}
@@ -220,25 +179,14 @@ a{color:inherit}
 .site-foot h3{font-size:15px;font-weight:700;color:#fff;margin:0 0 10px}
 .site-foot p{margin:0 0 6px;font-size:15px}
 .site-foot a{color:#fff}
-.site-foot .brand{color:#fff;margin-bottom:10px}
+.site-foot .brand{color:#fff;margin-bottom:12px}
 .site-foot .hours li{border-color:rgba(255,255,255,.12);font-size:15px}
 .foot-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:32px;padding-top:18px;font-size:14px;opacity:.75}
-
 .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:600;z-index:120}
 
 @media (max-width:960px){
-  .hero-grid{grid-template-columns:1fr}
-  .sticker{margin:-44px 12px 0}
-  .hero-nav{left:auto;right:12px;top:12px;bottom:auto}
   .detail,.detail-more,.about,.contact{grid-template-columns:1fr}
   .panel{position:static}
-  .list-layout{grid-template-columns:minmax(0,1fr)}
-  .sortlab .sort-txt{display:none}
-  .filters{display:none;position:static}
-  .filters.open{display:block}
-  .filters-toggle{display:inline-flex}
-  .filters-done{display:flex}
-  .visit-grid{grid-template-columns:1fr}
   .foot-grid{grid-template-columns:1fr 1fr}
 }
 @media (max-width:760px){
@@ -246,31 +194,27 @@ a{color:inherit}
   .nav{order:3;width:100%;margin-left:0;overflow-x:auto;gap:22px}
   .hdr-call{margin-left:auto}
   .lbl-long{display:none}.lbl-short{display:inline}
-  .intro{padding-top:28px}
-  .sticker-specs{grid-template-columns:repeat(2,1fr)}
+  .wm{font-size:16px}
+  .page-head{padding-top:26px}
+  .sel{flex:1 1 calc(50% - 10px);min-width:0}
   body.has-mbar .mbar{display:flex}
   body.has-mbar main{padding-bottom:80px}
-  .panel-cta .btn-wa,.panel-cta .btn-blue{display:none}
+  .panel-cta .btn-wa,.panel-cta .btn-accent{display:none}
   .foot-grid{grid-template-columns:1fr}
   .gal-arrow{width:38px;height:38px}
-}
-@media (prefers-reduced-motion: reduce){
-  .sticker.enter{animation:none}
-  html{scroll-behavior:auto}
 }
 </style>
 </head>
 <body>
 <header class="site-head">
   <div class="wrap hdr">
-    <a class="brand" href="#/" id="brand"></a>
+    <a class="brand" href="#/" id="brand" aria-label="ADN Auto Parc, stocul de mașini"></a>
     <nav class="nav" aria-label="Meniu principal">
-      <a href="#/" data-nav="/">Acasă</a>
-      <a href="#/masini" data-nav="/masini">Mașini</a>
+      <a href="#/" data-nav="/">Mașini</a>
       <a href="#/despre-noi" data-nav="/despre-noi">Despre noi</a>
       <a href="#/contact" data-nav="/contact">Contact</a>
     </nav>
-    <a class="btn btn-blue hdr-call" id="hdrcall"></a>
+    <a class="btn btn-accent hdr-call" id="hdrcall"></a>
   </div>
 </header>
 <main id="app"></main>
@@ -280,13 +224,11 @@ a{color:inherit}
 
 <script>
 /* =========================================================
-   1. DATELE DEALERULUI — de înlocuit cu datele clientului
+   1. DATELE DEALERULUI — de completat cu datele clientului
    ========================================================= */
 const CONFIG = {
-  name: "Auto Select",
-  mark: "AS",
+  name: "ADN Auto Parc",
   tagline: "Mașini rulate verificate",
-  headline: "Mașini rulate verificate, gata de drum",
   since: 2010,
   phone: "+40700000000",
   phoneDisplay: "0700 000 000",
@@ -294,7 +236,7 @@ const CONFIG = {
   email: "",
   address: "Str. Exemplu nr. 10",
   city: "Orașul tău",
-  legalName: "Auto Select SRL",
+  legalName: "ADN Auto Parc SRL",
   cui: "RO00000000",
   regCom: "J00/000/2010",
   facebook: "",
@@ -307,7 +249,7 @@ const CONFIG = {
   ],
   about: [
     "Suntem un parc auto de familie. Aducem mașini rulate din Germania, Austria și Olanda, le verificăm înainte să ajungă în parc și îți spunem exact ce știm despre fiecare.",
-    "Nu avem multe mașini deodată, și asta e intenționat: le alegem pe rând, le pregătim cum trebuie și le vindem la un preț pe care îl putem explica."
+    "Avem puține mașini deodată, și asta e intenționat: le alegem pe rând, le pregătim cum trebuie și le vindem la un preț pe care îl putem explica."
   ],
   promises: [
     "Istoric de service, acolo unde există",
@@ -318,11 +260,10 @@ const CONFIG = {
 };
 
 /* =========================================================
-   2. STOCUL — date de exemplu. Mai târziu vin din Airtable.
-   photos: [] = se afișează ilustrația; adaugă URL-uri de poze reale.
+   2. Date de exemplu — apar DOAR în previzualizare.
+   Pe site-ul live, mașinile vin din Airtable (/api/cars).
    ========================================================= */
 const daysAgo = n => { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0,10); };
-
 const SAMPLE_CARS = [
   { id:"recA1x9Pq01Ta", title:"Volkswagen Passat Variant 2.0 TDI Highline", brand:"Volkswagen", year:2018, km:187400, hp:150, cc:1968, fuel:"Diesel", gearbox:"Automată", body:"Break", price:14900, oldPrice:15900, status:"Disponibil", featured:true, color:{name:"Gri", hex:"#7D848B"}, euro:"Euro 6", added:daysAgo(4), photos:[],
     features:["Navigație","Climatronic 3 zone","Senzori parcare față-spate","Cameră marșarier","Scaune încălzite","Pilot automat adaptiv","Faruri LED","CarPlay / Android Auto"],
@@ -368,11 +309,11 @@ const SAMPLE_CARS = [
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const num = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+const num = n => String(Math.round(n || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 const eur = n => num(n) + " €";
 const slugify = s => String(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 const ageDays = iso => Math.floor((Date.now() - new Date(iso + "T12:00:00").getTime()) / 86400000);
-const uniq = a => [...new Set(a)];
+const uniq = a => [...new Set(a.filter(Boolean))];
 function plural(n){
   if (n === 1) return "1 mașină";
   if (n !== 0 && (n % 100 === 0 || n % 100 >= 20)) return n + " de mașini";
@@ -393,12 +334,12 @@ function prepare(){
 
 const RANK = { "Disponibil":0, "Rezervat":1, "Vândut":2 };
 const BODY_ORDER = ["Break","SUV","Berlină","Hatchback","Monovolum","Van","Coupé","Cabrio"];
+const isSold = c => c.status === "Vândut";
 
 function listed(){
   return CARS.filter(c => c.status !== "Ascuns" && (c.status !== "Vândut" || ageDays(c.soldDate || daysAgo(0)) <= CONFIG.soldVisibleDays))
-    .sort((a,b) => RANK[a.status] - RANK[b.status] || (a.added < b.added ? 1 : a.added > b.added ? -1 : 0));
+    .sort((a,b) => (RANK[a.status] ?? 0) - (RANK[b.status] ?? 0) || (a.added < b.added ? 1 : a.added > b.added ? -1 : 0));
 }
-const isSold = c => c.status === "Vândut";
 
 const telHref = () => "tel:" + CONFIG.phone;
 function waHref(car){
@@ -417,15 +358,21 @@ function todayInfo(){
   const now = (+get("hour")) * 60 + (+get("minute"));
   const entry = CONFIG.hours.find(h => h.days.includes(wd));
   const toMin = t => { const [h,m] = t.split(":"); return +h * 60 + +m; };
-  if (!entry || !entry.open) return { wd, entry, open:false, text:"Închis azi" };
-  if (now < toMin(entry.open)) return { wd, entry, open:false, text:`Deschidem azi la ${entry.open}` };
-  if (now < toMin(entry.close)) return { wd, entry, open:true, text:`Deschis acum, până la ${entry.close}` };
-  return { wd, entry, open:false, text:"Închis acum" };
+  if (!entry || !entry.open) return { entry, open:false, text:"Închis azi" };
+  if (now < toMin(entry.open)) return { entry, open:false, text:`Deschidem azi la ${entry.open}` };
+  if (now < toMin(entry.close)) return { entry, open:true, text:`Deschis acum, până la ${entry.close}` };
+  return { entry, open:false, text:"Închis acum" };
 }
 function hoursList(){
   const t = todayInfo();
   return `<ul class="hours">${CONFIG.hours.map(h => `<li class="${h === t.entry ? "today" : ""}"><span>${esc(h.label)}</span><span>${h.open ? `${h.open} – ${h.close}` : "Închis"}</span></li>`).join("")}</ul>`;
 }
+
+/* ---------- Logo ---------- */
+function logoMark(size){
+  return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="var(--logo-tile)"/><path d="M15 53 L32 14 L49 53" fill="none" stroke="var(--logo-legs)" stroke-width="8.5" stroke-linejoin="round"/><path d="M16.5 42.5 C 23 34, 41 32.5, 47.5 42.5" fill="none" stroke="#FF5A1F" stroke-width="5" stroke-linecap="round"/></svg>`;
+}
+const wordmark = () => `<span class="wm"><b>ADN</b> Auto Parc</span>`;
 
 /* ---------- Icons ---------- */
 const I = {
@@ -435,72 +382,24 @@ const I = {
   right:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>',
   share:'<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>',
   pin:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>',
-  close:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>',
-  sliders:'<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="2"/></svg>'
+  close:'<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>'
 };
 
-/* ---------- Car illustration (placeholder until real photos) ---------- */
-const PROFILES = {
-  berlina:   { hood:108, aBase:128, roofStart:170, roofY:68, roofEnd:262, rearX:318, tail:100, back:378, wf:95, wr:305, r:24 },
-  break:     { hood:108, aBase:128, roofStart:170, roofY:66, roofEnd:338, rearX:362, tail:98,  back:378, wf:95, wr:305, r:24 },
-  hatchback: { hood:110, aBase:132, roofStart:172, roofY:66, roofEnd:300, rearX:338, tail:100, back:352, wf:95, wr:288, r:23 },
-  suv:       { hood:96,  aBase:132, roofStart:168, roofY:50, roofEnd:334, rearX:356, tail:86,  back:378, wf:98, wr:304, r:27, bottom:146 },
-  monovolum: { hood:106, aBase:110, roofStart:166, roofY:52, roofEnd:336, rearX:360, tail:88,  back:376, wf:95, wr:305, r:24 },
-  van:       { hood:98,  aBase:106, roofStart:150, roofY:38, roofEnd:368, rearX:376, tail:56,  back:378, wf:95, wr:310, r:24, winEnd:205 },
-  coupe:     { hood:110, aBase:134, roofStart:180, roofY:74, roofEnd:250, rearX:330, tail:102, back:376, wf:95, wr:305, r:24 }
-};
-function shade(hex, amt){
-  const n = parseInt(hex.slice(1), 16);
-  const f = v => Math.max(0, Math.min(255, Math.round(amt < 0 ? v * (1 + amt) : v + (255 - v) * amt)));
-  const r = f(n >> 16), g = f((n >> 8) & 255), b = f(n & 255);
-  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-function bodyPath(p){
-  const B = p.bottom || 150;
-  return `M22 ${B} L22 ${p.hood+16} Q24 ${p.hood} 46 ${p.hood-3} L${p.aBase} ${p.hood-7} L${p.roofStart} ${p.roofY} Q${(p.roofStart+p.roofEnd)/2} ${p.roofY-3} ${p.roofEnd} ${p.roofY} L${p.rearX} ${p.tail} L${p.back-8} ${p.tail+3} Q${p.back} ${p.tail+6} ${p.back} ${p.tail+18} L${p.back} ${B} Z`;
-}
-function carGroup(car){
-  const p = PROFILES[slugify(car.body)] || PROFILES.berlina;
-  const B = p.bottom || 150, belt = p.hood - 7, col = car.color.hex;
-  const dark = shade(col, -0.38), light = shade(col, 0.3);
-  const winEnd = p.winEnd || p.rearX - 10;
-  const cTop = Math.min(p.roofEnd - 3, winEnd);
-  const dY = p.winEnd ? p.roofY + 7 : p.tail + 1;
-  const win = `M${p.aBase+10} ${belt-1} L${p.roofStart+6} ${p.roofY+7} L${cTop} ${p.roofY+7} L${winEnd} ${dY} L${winEnd} ${belt-1} Z`;
-  const mid = Math.round((p.aBase + 10 + winEnd) / 2);
-  const wheel = x => `<circle cx="${x}" cy="${B}" r="${p.r+4}" fill="#121417"/><circle cx="${x}" cy="${B}" r="${p.r}" fill="#1c1e21"/><circle cx="${x}" cy="${B}" r="${p.r*0.6}" fill="#c3c9d0"/><circle cx="${x}" cy="${B}" r="${p.r*0.6-3}" fill="#99a1aa"/><circle cx="${x}" cy="${B}" r="4" fill="#5f6770"/>`;
-  return `
-    <ellipse cx="${(22+p.back)/2}" cy="${B+p.r+1}" rx="${(p.back-22)/2+8}" ry="7" fill="#000" opacity=".2"/>
-    <path d="${bodyPath(p)}" fill="${col}"/>
-    <path d="M22 ${B-12} L${p.back} ${B-12} L${p.back} ${B} L22 ${B} Z" fill="${dark}"/>
-    <path d="M48 ${p.hood+1} L${p.back-10} ${p.tail+9}" stroke="${light}" stroke-width="2" opacity=".55" fill="none"/>
-    <path d="${win}" fill="#1f2c3a"/>
-    <path d="M${p.roofStart+14} ${p.roofY+9} L${p.roofStart+34} ${p.roofY+9} L${p.roofStart+12} ${belt-3} L${p.aBase+16} ${belt-3} Z" fill="#fff" opacity=".12"/>
-    <line x1="${mid}" y1="${p.roofY+4}" x2="${mid-3}" y2="${belt}" stroke="${col}" stroke-width="7"/>
-    <line x1="${mid-2}" y1="${belt+3}" x2="${mid-2}" y2="${B-13}" stroke="${dark}" stroke-width="1.5" opacity=".7"/>
-    <rect x="${mid+14}" y="${belt+8}" width="14" height="3" rx="1.5" fill="${dark}"/>
-    <rect x="${p.aBase+22}" y="${belt+8}" width="14" height="3" rx="1.5" fill="${dark}"/>
-    <path d="M${p.aBase+2} ${belt-1} l11 -7 l4 7 z" fill="${dark}"/>
-    <path d="M24 ${p.hood+5} q8 -6 20 -6 l0 7 l-20 3 z" fill="#f5edc8"/>
-    <rect x="${p.back-5}" y="${p.tail+9}" width="5" height="10" rx="2" fill="#c81e32"/>
-    ${wheel(p.wf)}${wheel(p.wr)}`;
-}
+/* ---------- Placeholder car (only when a car has no photos) ---------- */
 function carSVG(car, variant = "side", label = ""){
-  const p = PROFILES[slugify(car.body)] || PROFILES.berlina;
-  const off = (400 - (p.back + 22)) / 2;
-  const vb = variant === "zoom" ? "176 74 232 145" : "0 0 400 250";
-  const g = variant === "mirror"
-    ? `<g transform="translate(${400-off} 30) scale(-1 1)">${carGroup(car)}</g>`
-    : `<g transform="translate(${off} 30)">${carGroup(car)}</g>`;
+  const flip = variant === "mirror" ? 'transform="translate(400 0) scale(-1 1)"' : "";
+  const vb = variant === "zoom" ? "150 70 250 188" : "0 0 400 300";
+  const col = (car.color && car.color.hex) || "#8A9099";
   return `<svg viewBox="${vb}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(label || car.title)}" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="400" height="250" fill="var(--stage)"/>
-    <rect x="0" y="188" width="400" height="62" fill="var(--stage2)"/>
-    ${g}</svg>`;
-}
-function bodyIcon(body){
-  const p = PROFILES[slugify(body)] || PROFILES.berlina, B = p.bottom || 150;
-  const w = x => `<circle cx="${x}" cy="${B}" r="${p.r+5}" fill="var(--surface)"/><circle cx="${x}" cy="${B}" r="${p.r-3}" fill="currentColor"/>`;
-  return `<svg viewBox="12 28 376 156" aria-hidden="true"><path d="${bodyPath(p)}" fill="currentColor"/>${w(p.wf)}${w(p.wr)}</svg>`;
+    <rect width="400" height="300" fill="var(--stage)"/><rect y="212" width="400" height="88" fill="var(--stage2)"/>
+    <g ${flip}><g transform="translate(10 82) scale(0.95)">
+      <ellipse cx="200" cy="158" rx="182" ry="9" fill="#000" opacity=".18"/>
+      <path d="M12 136 L12 112 C 40 104 96 94 140 88 C 180 62 240 54 284 64 C 324 72 360 88 392 102 L392 136 Z" fill="${col}"/>
+      <path d="M156 88 C 190 68 236 62 276 70 L304 88 Z" fill="#1f2c3a"/>
+      <path d="M18 106 L44 100" stroke="#FF5A1F" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="88" cy="140" r="26" fill="#15181c"/><circle cx="88" cy="140" r="13" fill="#b9c0c8"/>
+      <circle cx="308" cy="140" r="26" fill="#15181c"/><circle cx="308" cy="140" r="13" fill="#b9c0c8"/>
+    </g></g></svg>`;
 }
 function media(car, i = 0, variant = "side"){
   if (car.photos.length) return `<img src="${esc(car.thumbs[i] || car.photos[i])}" alt="${esc(car.title)} ${car.year} – poza ${i+1}" loading="${i ? "lazy" : "eager"}">`;
@@ -512,27 +411,23 @@ function badge(car, inline = false){
   const cls = inline ? " badge-inline" : "";
   if (isSold(car)) return `<span class="badge badge-sold${cls}">Vândut</span>`;
   if (car.status === "Rezervat") return `<span class="badge badge-res${cls}">Rezervat</span>`;
-  if (car.isPromo) return `<span class="badge badge-promo${cls}">Promoție</span>`;
   return "";
 }
-function priceTag(car, lg = false){
-  const c = lg ? " tag-lg" : "";
-  if (isSold(car)) return `<div class="tag tag-sold${c}"><span class="tag-price">Vândut</span></div>`;
-  return `<div class="tag${c}"><span class="tag-price">${eur(car.price)}</span>${car.isPromo ? `<s class="tag-old" aria-label="Preț vechi">${eur(car.oldPrice)}</s><span class="tag-save">−${eur(car.oldPrice - car.price)}</span>` : ""}</div>`;
+function priceHTML(car){
+  if (isSold(car)) return `<span class="price-sold">Vândut</span>`;
+  return `<span class="price">${eur(car.price)}</span>${car.isPromo ? `<s class="price-old" aria-label="Preț vechi">${eur(car.oldPrice)}</s>` : ""}`;
 }
-const specItems = c => [c.year, num(c.km) + " km", c.hp + " CP", c.fuel, c.gearbox].map(s => `<li>${esc(s)}</li>`).join("");
+const specItems = c => [c.year, c.km ? num(c.km) + " km" : "", c.hp ? c.hp + " CP" : "", c.fuel, c.gearbox].filter(Boolean).map(s => `<li>${esc(s)}</li>`).join("");
 function card(car){
   return `<a class="card${isSold(car) ? " is-sold" : ""}" href="#/masina/${car.slug}">
     <div class="card-media">${media(car)}${badge(car)}</div>
-    <div class="card-body"><h3 class="card-title">${esc(car.title)}</h3><p class="card-sub">${esc(car.body)}</p><ul class="specs">${specItems(car)}</ul></div>
-    ${priceTag(car)}
+    <div class="card-body"><h3 class="card-title">${esc(car.title)}</h3><ul class="specs">${specItems(car)}</ul>
+    <div class="price-row">${priceHTML(car)}</div></div>
   </a>`;
 }
 
 /* ---------- Router ---------- */
 const app = $("#app"), mbar = $("#mbar"), lb = $("#lightbox");
-let heroI = 0, firstHome = true;
-
 function parseHash(){
   const h = location.hash.slice(1) || "/";
   const [path, qs] = h.split("?");
@@ -541,20 +436,20 @@ function parseHash(){
 function setNav(path){
   $$("[data-nav]").forEach(a => {
     const n = a.dataset.nav;
-    const on = n === path || (n === "/masini" && path.startsWith("/masina/"));
+    const on = n === path || (n === "/" && path.startsWith("/masina/"));
     on ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current");
   });
 }
 let lastPath = null;
 function render(){
-  const { path, params } = parseHash();
+  let { path, params } = parseHash();
+  if (path === "/masini") { path = "/"; }
   document.body.classList.remove("has-mbar");
   mbar.innerHTML = "";
   closeLB();
   setNav(path);
   let m;
-  if (path === "/") renderHome();
-  else if (path === "/masini") renderList(params);
+  if (path === "/") renderList(params);
   else if ((m = path.match(/^\/masina\/([^/]+)$/))) renderDetail(decodeURIComponent(m[1]));
   else if (path === "/despre-noi") renderAbout();
   else if (path === "/contact") renderContact();
@@ -562,7 +457,6 @@ function render(){
   if (lastPath !== path) window.scrollTo(0, 0);
   lastPath = path;
 }
-
 function swipe(el, onNext, onPrev){
   let x0 = null, y0 = null;
   el.addEventListener("pointerdown", e => { x0 = e.clientX; y0 = e.clientY; el.dataset.moved = ""; });
@@ -574,179 +468,82 @@ function swipe(el, onNext, onPrev){
   el.addEventListener("pointercancel", () => { x0 = null; });
 }
 
-/* ---------- Home ---------- */
-function heroHTML(list, i, enter){
-  const c = list[i];
-  return `<div class="hero-grid">
-    <div class="hero-stage">${media(c)}
-      ${list.length > 1 ? `<div class="hero-nav"><button class="round" data-hero="-1" aria-label="Mașina anterioară">${I.left}</button><span class="hero-count">${i+1} / ${list.length}</span><button class="round" data-hero="1" aria-label="Mașina următoare">${I.right}</button></div>` : ""}
-    </div>
-    <div class="sticker${enter ? " enter" : ""}">
-      <p class="sticker-kicker">${esc(c.body)}, ${esc(c.color.name.toLowerCase())}${c.status === "Rezervat" ? ", rezervată" : ""}</p>
-      <h2 class="sticker-title">${esc(c.title)}</h2>
-      <dl class="sticker-specs">
-        <div><dt>An</dt><dd>${c.year}</dd></div>
-        <div><dt>Kilometraj</dt><dd>${num(c.km)} km</dd></div>
-        <div><dt>Putere</dt><dd>${c.hp} CP</dd></div>
-        <div><dt>Combustibil</dt><dd>${esc(c.fuel)}</dd></div>
-        <div><dt>Cutie</dt><dd>${esc(c.gearbox)}</dd></div>
-        <div><dt>Motor</dt><dd>${num(c.cc)} cm³</dd></div>
-      </dl>
-      <div class="sticker-price"><span class="sp-now">${eur(c.price)}</span>${c.isPromo ? `<s>${eur(c.oldPrice)}</s>` : ""}</div>
-      <a class="btn btn-dark" href="#/masina/${c.slug}">Vezi mașina</a>
-    </div>
-  </div>`;
-}
-function renderHome(){
-  const L = listed(), av = L.filter(c => !isSold(c));
-  let feat = av.filter(c => c.featured);
-  if (!feat.length) feat = av.slice(0, 3);
-  heroI = Math.min(heroI, Math.max(0, feat.length - 1));
-  const counts = {};
-  av.forEach(c => counts[c.body] = (counts[c.body] || 0) + 1);
-  const bodies = Object.keys(counts).sort((a,b) => (BODY_ORDER.indexOf(a) + 99) % 99 - (BODY_ORDER.indexOf(b) + 99) % 99);
-  const recent = [...av].sort((a,b) => a.added < b.added ? 1 : -1).slice(0, 6);
-  const t = todayInfo();
-
-  app.innerHTML = `
-    <section class="wrap intro">
-      <h1 class="display h1">${esc(CONFIG.headline)}</h1>
-      <p class="lead">${plural(av.length)} în stoc acum, în ${esc(CONFIG.city)}. Programează un test drive sau scrie-ne pe WhatsApp.</p>
-    </section>
-    ${feat.length ? `<section class="wrap hero" id="hero" aria-label="Mașini recomandate">${heroHTML(feat, heroI, firstHome)}</section>` : ""}
-    <section class="wrap block">
-      <div class="block-head"><h2 class="h2">Caută după caroserie</h2></div>
-      <div class="bodychips">${bodies.map(b => `<a class="bodychip" href="#/masini?caroserie=${slugify(b)}">${bodyIcon(b)}<strong>${esc(b)}</strong><span>${plural(counts[b])}</span></a>`).join("")}</div>
-    </section>
-    <section class="wrap block">
-      <div class="block-head"><h2 class="h2">Intrate recent</h2><a class="link" href="#/masini">Tot stocul (${av.length})</a></div>
-      <div class="grid">${recent.map(card).join("")}</div>
-    </section>
-    <section class="visit">
-      <div class="wrap visit-grid">
-        <div>
-          <h2 class="h2">Vino să le vezi în parc</h2>
-          <p>${esc(CONFIG.address)}, ${esc(CONFIG.city)}</p>
-          <div class="btns"><a class="btn btn-ghost" href="${mapsHref()}" target="_blank" rel="noopener">${I.pin} Indicații rutiere</a></div>
-        </div>
-        <div>
-          <span class="status"><span class="dot${t.open ? " on" : ""}"></span>${t.text}</span>
-          ${hoursList()}
-        </div>
-        <div>
-          <span class="status">Răspundem repede</span>
-          <p>Sună-ne sau trimite un mesaj pe WhatsApp, de obicei răspundem în aceeași oră.</p>
-          <div class="btns"><a class="btn btn-blue" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} WhatsApp</a></div>
-        </div>
-      </div>
-    </section>`;
-  firstHome = false;
-
-  const heroEl = $("#hero");
-  if (!heroEl) return;
-  const go = d => { heroI = (heroI + d + feat.length) % feat.length; heroEl.innerHTML = heroHTML(feat, heroI, false); bindHero(); };
-  function bindHero(){
-    $$("[data-hero]", heroEl).forEach(b => b.onclick = () => go(+b.dataset.hero));
-    const st = $(".hero-stage", heroEl);
-    if (st && feat.length > 1) swipe(st, () => go(1), () => go(-1));
-  }
-  bindHero();
-  document.title = `${CONFIG.name} — ${CONFIG.tagline}`;
-}
-
-/* ---------- List ---------- */
-const PRICE_STEPS = [5000, 7500, 10000, 12500, 15000, 20000];
+/* ---------- Stock list (home) ---------- */
 function renderList(params){
-  const F = { caroserie:"", marca:"", combustibil:"", cutie:"", pretmax:"", anmin:"", promo:"", sort:"noi" };
+  const F = { caroserie:"", marca:"", combustibil:"", cutie:"", sort:"noi" };
   for (const k in F) if (params.get(k)) F[k] = params.get(k);
   const L = listed();
   const avCount = L.filter(c => !isSold(c)).length;
-  const bodies = uniq(L.map(c => c.body)).sort((a,b) => BODY_ORDER.indexOf(a) - BODY_ORDER.indexOf(b));
+  const counts = {};
+  L.filter(c => !isSold(c)).forEach(c => { if (c.body) counts[c.body] = (counts[c.body] || 0) + 1; });
+  const bodies = uniq(L.map(c => c.body)).sort((a,b) => (BODY_ORDER.indexOf(a) + 99) % 99 - (BODY_ORDER.indexOf(b) + 99) % 99);
   const brands = uniq(L.map(c => c.brand)).sort((a,b) => a.localeCompare(b, "ro"));
   const fuels = uniq(L.map(c => c.fuel));
   const boxes = uniq(L.map(c => c.gearbox));
-  const years = L.map(c => c.year);
-  const yMin = Math.min(...years), yMax = Math.max(...years);
-  const chipGroup = (key, vals) => `<div class="chips"><button class="chip" data-f="${key}" data-v="" aria-pressed="${!F[key]}">Toate</button>${vals.map(v => `<button class="chip" data-f="${key}" data-v="${slugify(v)}" aria-pressed="${F[key] === slugify(v)}">${esc(v)}</button>`).join("")}</div>`;
+  const opt = (k, label, vals) => vals.length < 2 ? "" : `<select class="sel" data-s="${k}" aria-label="${label}"><option value="">${label}: toate</option>${vals.map(v => `<option value="${slugify(v)}"${F[k] === slugify(v) ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>`;
 
   app.innerHTML = `
-    <section class="wrap page-head"><h1 class="display h1">Stoc</h1><p class="lead" id="count"></p></section>
-    <section class="wrap list-layout">
-      <aside class="filters" id="filters" aria-label="Filtre">
-        <div class="fgroup"><h2>Caroserie</h2>${chipGroup("caroserie", bodies)}</div>
-        <div class="fgroup"><h2><label for="f-marca">Marcă</label></h2><select class="sel" id="f-marca" data-s="marca"><option value="">Toate mărcile</option>${brands.map(b => `<option value="${slugify(b)}"${F.marca === slugify(b) ? " selected" : ""}>${esc(b)}</option>`).join("")}</select></div>
-        <div class="fgroup"><h2>Combustibil</h2>${chipGroup("combustibil", fuels)}</div>
-        <div class="fgroup"><h2>Cutie de viteze</h2>${chipGroup("cutie", boxes)}</div>
-        <div class="fgroup"><h2><label for="f-pret">Preț maxim</label></h2><select class="sel" id="f-pret" data-s="pretmax"><option value="">Orice preț</option>${PRICE_STEPS.map(p => `<option value="${p}"${F.pretmax == p ? " selected" : ""}>Până la ${eur(p)}</option>`).join("")}</select></div>
-        <div class="fgroup"><h2><label for="f-an">An minim</label></h2><select class="sel" id="f-an" data-s="anmin"><option value="">Orice an</option>${Array.from({length: yMax - yMin + 1}, (_, i) => yMax - i).map(y => `<option value="${y}"${F.anmin == y ? " selected" : ""}>Din ${y}</option>`).join("")}</select></div>
-        <div class="fgroup"><label class="check"><input type="checkbox" id="f-promo"${F.promo ? " checked" : ""}> Doar mașini la promoție</label></div>
-        <button class="freset" id="freset" type="button">Resetează filtrele</button>
-        <button class="btn btn-blue filters-done" id="fdone" type="button">Vezi rezultatele</button>
-      </aside>
-      <div>
-        <div class="list-tools">
-          <button class="btn btn-ghost filters-toggle" id="ftoggle" type="button" aria-expanded="false" aria-controls="filters">${I.sliders} Filtre <span class="fcount" id="fcount" hidden></span></button>
-          <label class="sortlab"><span class="sort-txt">Sortează</span> <select class="sel" id="f-sort" aria-label="Sortează">
+    <section class="wrap page-head">
+      <div><h1 class="h1">Mașini în stoc</h1><p class="lead" id="count"></p></div>
+    </section>
+    <section class="wrap">
+      <div class="toolbar">
+        ${bodies.length > 1 ? `<div class="chips" role="group" aria-label="Caroserie"><button class="chip" data-f="caroserie" data-v="" aria-pressed="${!F.caroserie}">Toate</button>${bodies.map(b => `<button class="chip" data-f="caroserie" data-v="${slugify(b)}" aria-pressed="${F.caroserie === slugify(b)}">${esc(b)}<span class="n">${counts[b] || 0}</span></button>`).join("")}</div>` : ""}
+        <div class="selects">
+          ${opt("marca", "Marcă", brands)}${opt("combustibil", "Combustibil", fuels)}${opt("cutie", "Cutie", boxes)}
+          <select class="sel" id="f-sort" aria-label="Sortează">
             <option value="noi">Cele mai noi</option><option value="pret-asc">Preț crescător</option><option value="pret-desc">Preț descrescător</option><option value="km">Kilometraj mic</option><option value="an">An recent</option>
-          </select></label>
+          </select>
+          <button class="freset" id="freset" type="button" hidden>Resetează</button>
         </div>
-        <div class="grid" id="results" aria-live="polite"></div>
       </div>
+      <div class="grid" id="results" aria-live="polite"></div>
     </section>`;
 
-  const panel = $("#filters"), results = $("#results"), count = $("#count"), fcount = $("#fcount"), toggle = $("#ftoggle");
+  const results = $("#results"), count = $("#count"), resetBtn = $("#freset");
   $("#f-sort").value = F.sort;
-
-  function sortCars(r){
-    const s = F.sort;
-    if (s === "noi") return r;
-    const key = { "pret-asc": c => c.price, "pret-desc": c => -c.price, "km": c => c.km, "an": c => -c.year }[s];
-    return [...r].sort((a,b) => (isSold(a) - isSold(b)) || key(a) - key(b));
-  }
   function apply(){
     let r = L.filter(c =>
       (!F.caroserie || slugify(c.body) === F.caroserie) &&
       (!F.marca || slugify(c.brand) === F.marca) &&
       (!F.combustibil || slugify(c.fuel) === F.combustibil) &&
-      (!F.cutie || slugify(c.gearbox) === F.cutie) &&
-      (!F.pretmax || c.price <= +F.pretmax) &&
-      (!F.anmin || c.year >= +F.anmin) &&
-      (!F.promo || (c.isPromo && !isSold(c))));
-    r = sortCars(r);
-    const active = ["caroserie","marca","combustibil","cutie","pretmax","anmin","promo"].filter(k => F[k]).length;
+      (!F.cutie || slugify(c.gearbox) === F.cutie));
+    if (F.sort !== "noi") {
+      const key = { "pret-asc": c => c.price, "pret-desc": c => -c.price, "km": c => c.km, "an": c => -c.year }[F.sort];
+      r = [...r].sort((a,b) => (isSold(a) - isSold(b)) || key(a) - key(b));
+    }
+    const active = ["caroserie","marca","combustibil","cutie"].filter(k => F[k]).length;
+    resetBtn.hidden = !active;
     if (!active) count.textContent = avCount === 1 ? "1 mașină disponibilă acum" : `${plural(avCount)} disponibile acum`;
     else count.textContent = r.length === 0 ? "Nicio mașină găsită" : r.length === 1 ? "1 mașină găsită" : `${plural(r.length)} găsite`;
-    fcount.hidden = !active; fcount.textContent = active;
-    results.innerHTML = r.length ? r.map(card).join("") : `
-      <div class="empty"><h3>Nicio mașină nu se potrivește filtrelor</h3>
-      <p>Schimbă filtrele sau spune-ne ce mașină cauți. Uneori o avem deja pe drum spre parc.</p>
-      <div class="btns"><button class="btn btn-ghost" type="button" data-reset>Resetează filtrele</button><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} Spune-ne ce cauți</a></div></div>`;
+    results.innerHTML = r.length ? r.map(card).join("") : (L.length ? `
+      <div class="empty"><h3>Nicio mașină nu se potrivește</h3>
+      <p>Schimbă filtrele sau spune-ne ce mașină cauți.</p>
+      <div class="btns"><button class="btn btn-ghost" type="button" data-reset>Resetează filtrele</button><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} Spune-ne ce cauți</a></div></div>` : `
+      <div class="empty"><h3>Stocul se actualizează</h3>
+      <p>Revino în curând sau sună-ne, îți spunem ce mașini avem în parc.</p>
+      <div class="btns"><a class="btn btn-accent" href="${telHref()}">${I.phone} Sună ${esc(CONFIG.phoneDisplay)}</a></div></div>`);
     const rb = $("[data-reset]", results); if (rb) rb.onclick = reset;
     const qs = new URLSearchParams();
     for (const k in F) if (F[k] && !(k === "sort" && F[k] === "noi")) qs.set(k, F[k]);
-    try { history.replaceState(null, "", "#/masini" + (qs.toString() ? "?" + qs : "")); } catch (e) {}
+    try { history.replaceState(null, "", "#/" + (qs.toString() ? "?" + qs : "")); } catch (e) {}
   }
   function reset(){
-    Object.assign(F, { caroserie:"", marca:"", combustibil:"", cutie:"", pretmax:"", anmin:"", promo:"" });
-    $$("[data-f]", panel).forEach(b => b.setAttribute("aria-pressed", b.dataset.v === ""));
-    $$("[data-s]", panel).forEach(s => s.value = "");
-    $("#f-promo").checked = false;
+    Object.assign(F, { caroserie:"", marca:"", combustibil:"", cutie:"" });
+    $$("[data-f]").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === ""));
+    $$("[data-s]").forEach(s => s.value = "");
     apply();
   }
-  $$("[data-f]", panel).forEach(btn => btn.onclick = () => {
-    const k = btn.dataset.f; F[k] = btn.dataset.v;
-    $$(`[data-f="${k}"]`, panel).forEach(b => b.setAttribute("aria-pressed", b.dataset.v === F[k]));
+  $$("[data-f]").forEach(btn => btn.onclick = () => {
+    F[btn.dataset.f] = btn.dataset.v;
+    $$(`[data-f="${btn.dataset.f}"]`).forEach(b => b.setAttribute("aria-pressed", b.dataset.v === F[btn.dataset.f]));
     apply();
   });
-  $$("[data-s]", panel).forEach(s => s.onchange = () => { F[s.dataset.s] = s.value; apply(); });
-  $("#f-promo").onchange = e => { F.promo = e.target.checked ? "1" : ""; apply(); };
+  $$("[data-s]").forEach(s => s.onchange = () => { F[s.dataset.s] = s.value; apply(); });
   $("#f-sort").onchange = e => { F.sort = e.target.value; apply(); };
-  $("#freset").onclick = reset;
-  const setOpen = o => { panel.classList.toggle("open", o); toggle.setAttribute("aria-expanded", o); };
-  toggle.onclick = () => setOpen(!panel.classList.contains("open"));
-  $("#fdone").onclick = () => { setOpen(false); toggle.scrollIntoView({ block:"start" }); };
+  resetBtn.onclick = reset;
   apply();
-  document.title = `Stoc mașini — ${CONFIG.name}`;
+  document.title = `Mașini în stoc — ${CONFIG.name}`;
 }
 
 /* ---------- Detail ---------- */
@@ -759,7 +556,7 @@ function renderDetail(slug){
   const car = CARS.find(c => c.slug === slug && c.status !== "Ascuns")
     || CARS.find(c => c.status !== "Ascuns" && slug.endsWith("-" + c.id.slice(-5).toLowerCase()));
   if (!car) {
-    app.innerHTML = `<section class="wrap page-head"><h1 class="display h1">Mașina nu mai este în stoc</h1><p class="lead">Poate s-a vândut între timp. Uite ce avem acum în parc.</p><p style="margin-top:22px"><a class="btn btn-blue" href="#/masini">Vezi stocul</a></p></section>`;
+    app.innerHTML = `<section class="wrap page-head"><div><h1 class="h1">Mașina nu mai este în stoc</h1><p class="lead">Poate s-a vândut între timp. Uite ce avem acum în parc.</p><p style="margin-top:22px"><a class="btn btn-ink" href="#/">Vezi stocul</a></p></div></section>`;
     document.title = `Mașina nu mai este în stoc — ${CONFIG.name}`;
     return;
   }
@@ -774,14 +571,14 @@ function renderDetail(slug){
   }).slice(0, 3);
   const t = todayInfo();
   const specRows = [
-    ["Marcă", car.brand], ["An fabricație", car.year], ["Kilometraj", num(car.km) + " km"], ["Putere", car.hp + " CP"],
-    ["Capacitate cilindrică", num(car.cc) + " cm³"], ["Combustibil", car.fuel], ["Cutie de viteze", car.gearbox], ["Caroserie", car.body],
+    ["Marcă", car.brand], ["An fabricație", car.year], ["Kilometraj", car.km ? num(car.km) + " km" : ""], ["Putere", car.hp ? car.hp + " CP" : ""],
+    ["Capacitate cilindrică", car.cc ? num(car.cc) + " cm³" : ""], ["Combustibil", car.fuel], ["Cutie de viteze", car.gearbox], ["Caroserie", car.body],
     ["Culoare", car.color && car.color.name], ["Normă poluare", car.euro]
   ].filter(r => r[1]);
-  const similarHTML = similar.length ? `<section class="wrap block"><div class="block-head"><h2 class="h2">${sold ? "Mașini asemănătoare din stoc" : "Te-ar mai putea interesa"}</h2><a class="link" href="#/masini">Tot stocul</a></div><div class="grid">${similar.map(card).join("")}</div></section>` : "";
+  const similarHTML = similar.length ? `<section class="wrap block"><div class="block-head"><h2 class="h2">${sold ? "Mașini asemănătoare din stoc" : "Te-ar mai putea interesa"}</h2><a class="link" href="#/">Tot stocul</a></div><div class="grid">${similar.map(card).join("")}</div></section>` : "";
 
   app.innerHTML = `
-    <div class="wrap crumbs"><a class="back" href="#/masini">${I.left} Înapoi la stoc</a></div>
+    <div class="wrap crumbs"><a class="back" href="#/">${I.left} Înapoi la stoc</a></div>
     ${sold ? `<div class="wrap"><div class="soldbanner"><strong>Această mașină a fost vândută.</strong> Mai jos găsești mașini asemănătoare din stoc, sau scrie-ne ce cauți.</div></div>` : ""}
     <section class="wrap detail">
       <div class="gallery">
@@ -791,16 +588,16 @@ function renderDetail(slug){
           <span class="gal-count" id="galcount">1 / ${n}</span>
         </div>
         ${n > 1 ? `<div class="gal-thumbs">${gal.imgs.map((_, k) => `<button class="thumb" data-t="${k}" aria-label="Poza ${k+1}" aria-current="${k === 0}">${slideContent(k)}</button>`).join("")}</div>` : ""}
-        ${car.photos.length ? "" : `<p class="note">Imagini ilustrative. Pozele reale ale mașinii apar aici după ce sunt încărcate.</p>`}
+        ${car.photos.length ? "" : `<p class="note">Imagini ilustrative. Pozele reale apar aici după ce sunt încărcate.</p>`}
       </div>
       <aside class="panel">
         <p class="panel-sub">${esc(car.body)}${badge(car, true)}</p>
-        <h1 class="display h-car">${esc(car.title)}</h1>
+        <h1 class="h-car">${esc(car.title)}</h1>
         <ul class="specs specs-lg">${specItems(car)}</ul>
-        ${priceTag(car, true)}
+        <div class="price-lg">${priceHTML(car)}</div>
         <div class="panel-cta">
           <a class="btn btn-wa" href="${waHref(car)}" target="_blank" rel="noopener">${I.chat} ${sold ? "Cere o mașină asemănătoare" : "Întreabă pe WhatsApp"}</a>
-          <a class="btn btn-blue" href="${telHref()}">${I.phone} Sună ${esc(CONFIG.phoneDisplay)}</a>
+          <a class="btn btn-accent" href="${telHref()}">${I.phone} Sună ${esc(CONFIG.phoneDisplay)}</a>
           <button class="btn btn-ghost" id="share" type="button">${I.share} Trimite cuiva</button>
         </div>
         <p class="panel-note">${I.pin}<span>${esc(CONFIG.address)}, ${esc(CONFIG.city)}. ${t.text}.</span></p>
@@ -830,7 +627,7 @@ function renderDetail(slug){
   main.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openLB(show); } };
   $("#share").onclick = () => shareCar(car);
 
-  mbar.innerHTML = `<a class="btn btn-blue" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref(car)}" target="_blank" rel="noopener">${I.chat} WhatsApp</a>`;
+  mbar.innerHTML = `<a class="btn btn-accent" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref(car)}" target="_blank" rel="noopener">${I.chat} WhatsApp</a>`;
   document.body.classList.add("has-mbar");
   document.title = sold ? `${car.title} (vândută) — ${CONFIG.name}` : `${car.title} ${car.year} – ${eur(car.price)} | ${CONFIG.name}`;
 }
@@ -873,28 +670,25 @@ document.addEventListener("keydown", e => {
 function renderAbout(){
   const years = new Date().getFullYear() - CONFIG.since;
   app.innerHTML = `
-    <section class="wrap page-head"><h1 class="display h1">Despre noi</h1></section>
+    <section class="wrap page-head"><div><h1 class="h1">Despre noi</h1></div></section>
     <section class="wrap about">
       <div>
         <p class="lead" style="color:var(--ink);margin-top:0">În parc din ${CONFIG.since}, de ${years} de ani.</p>
         ${CONFIG.about.map(p => `<p>${esc(p)}</p>`).join("")}
-        <p style="margin-top:22px"><a class="btn btn-blue" href="#/masini">Vezi mașinile din stoc</a></p>
+        <p style="margin-top:22px"><a class="btn btn-ink" href="#/">Vezi mașinile din stoc</a></p>
       </div>
-      <div class="sticker">
-        <h2 class="sticker-title" style="font-size:24px">Ce primești la noi</h2>
-        <ul>${CONFIG.promises.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
-      </div>
+      <div class="promise"><h2 class="h2">Ce primești la noi</h2><ul>${CONFIG.promises.map(p => `<li>${esc(p)}</li>`).join("")}</ul></div>
     </section>`;
   document.title = `Despre noi — ${CONFIG.name}`;
 }
 function renderContact(){
   const t = todayInfo();
   app.innerHTML = `
-    <section class="wrap page-head"><h1 class="display h1">Contact</h1><p class="lead">Sună-ne, scrie-ne pe WhatsApp sau treci pe la parc în timpul programului.</p></section>
+    <section class="wrap page-head"><div><h1 class="h1">Contact</h1><p class="lead">Sună-ne, scrie-ne pe WhatsApp sau treci pe la parc în timpul programului.</p></div></section>
     <section class="wrap contact">
       <div>
         <div class="cbox"><h2>Telefon și WhatsApp</h2><p>${esc(CONFIG.phoneDisplay)}</p>
-          <div class="btns"><a class="btn btn-blue" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} WhatsApp</a></div></div>
+          <div class="btns"><a class="btn btn-accent" href="${telHref()}">${I.phone} Sună</a><a class="btn btn-wa" href="${waHref()}" target="_blank" rel="noopener">${I.chat} WhatsApp</a></div></div>
         <div class="cbox"><h2>Adresa parcului auto</h2><p>${esc(CONFIG.address)}, ${esc(CONFIG.city)}</p>
           <div class="btns"><a class="btn btn-ghost" href="${mapsHref()}" target="_blank" rel="noopener">${I.pin} Deschide în Google Maps</a></div></div>
         ${CONFIG.email ? `<div class="cbox"><h2>Email</h2><p><a href="mailto:${esc(CONFIG.email)}">${esc(CONFIG.email)}</a></p></div>` : ""}
@@ -907,42 +701,45 @@ function renderContact(){
   document.title = `Contact — ${CONFIG.name}`;
 }
 function render404(){
-  app.innerHTML = `<section class="wrap page-head"><h1 class="display h1">Pagina nu există</h1><p class="lead">Linkul e greșit sau pagina a fost mutată.</p><p style="margin-top:22px"><a class="btn btn-blue" href="#/masini">Vezi stocul</a></p></section>`;
+  app.innerHTML = `<section class="wrap page-head"><div><h1 class="h1">Pagina nu există</h1><p class="lead">Linkul e greșit sau pagina a fost mutată.</p><p style="margin-top:22px"><a class="btn btn-ink" href="#/">Vezi stocul</a></p></div></section>`;
   document.title = `Pagina nu există — ${CONFIG.name}`;
 }
 
-/* ---------- Chrome: header + footer ---------- */
+/* ---------- Header + footer ---------- */
 function renderChrome(){
-  $("#brand").innerHTML = `<span class="brand-mark" aria-hidden="true">${esc(CONFIG.mark)}</span>${esc(CONFIG.name)}`;
+  $("#brand").innerHTML = `${logoMark(38)}${wordmark()}`;
   const call = $("#hdrcall");
   call.href = telHref();
   call.innerHTML = `${I.phone}<span class="lbl-long">${esc(CONFIG.phoneDisplay)}</span><span class="lbl-short">Sună</span>`;
   const social = [CONFIG.facebook && `<a href="${esc(CONFIG.facebook)}" target="_blank" rel="noopener">Facebook</a>`, CONFIG.instagram && `<a href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener">Instagram</a>`].filter(Boolean).join(" · ");
+  const footMark = `<svg width="38" height="38" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#FFFFFF"/><path d="M15 53 L32 14 L49 53" fill="none" stroke="#0F1B2D" stroke-width="8.5" stroke-linejoin="round"/><path d="M16.5 42.5 C 23 34, 41 32.5, 47.5 42.5" fill="none" stroke="#FF5A1F" stroke-width="5" stroke-linecap="round"/></svg>`;
   $("#footer").innerHTML = `
     <div class="wrap foot-grid">
-      <div><div class="brand"><span class="brand-mark" aria-hidden="true">${esc(CONFIG.mark)}</span>${esc(CONFIG.name)}</div><p>${esc(CONFIG.tagline)}</p>${social ? `<p>${social}</p>` : ""}</div>
+      <div><div class="brand">${footMark}${wordmark()}</div><p>${esc(CONFIG.tagline)}</p>${social ? `<p>${social}</p>` : ""}</div>
       <div><h3>Program</h3>${hoursList()}</div>
       <div><h3>Contact</h3><p>${esc(CONFIG.address)}, ${esc(CONFIG.city)}</p><p><a href="${telHref()}">${esc(CONFIG.phoneDisplay)}</a></p><p><a href="${waHref()}" target="_blank" rel="noopener">WhatsApp</a></p></div>
       <div><h3>Date firmă</h3><p>${esc(CONFIG.legalName)}<br>CUI ${esc(CONFIG.cui)}<br>Reg. Com. ${esc(CONFIG.regCom)}</p><p><a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener">ANPC – Soluționarea alternativă a litigiilor</a></p></div>
     </div>
-    <div class="wrap foot-bottom">© ${new Date().getFullYear()} ${esc(CONFIG.legalName)}. Prețurile includ TVA unde este cazul.</div>`;
+    <div class="wrap foot-bottom">© ${new Date().getFullYear()} ${esc(CONFIG.legalName)}.</div>`;
 }
 
-/* ---------- Pornire: încarcă stocul din Airtable prin /api/cars ---------- */
+/* ---------- Start: load the stock from Airtable via /api/cars ---------- */
 async function boot(){
   renderChrome();
   app.innerHTML = `<section class="wrap page-head"><p class="lead">Se încarcă stocul…</p></section>`;
-  const local = location.protocol === "file:";
+  const preview = location.protocol === "file:" || window.self !== window.top;
   try {
-    if (local) throw new Error("preview local");
+    if (location.protocol === "file:") throw new Error("preview local");
     const res = await fetch("/api/cars", { headers: { accept: "application/json" } });
     if (!res.ok) throw new Error("HTTP " + res.status);
-    CARS = await res.json();
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error("răspuns invalid");
+    CARS = data;
   } catch (e) {
-    if (local) { CARS = SAMPLE_CARS; }
+    if (preview) { CARS = SAMPLE_CARS; }
     else {
       console.error("Stocul nu s-a putut încărca:", e);
-      app.innerHTML = `<section class="wrap page-head"><h1 class="display h1">Stocul nu s-a putut încărca</h1><p class="lead">Reîncarcă pagina peste un minut sau sună-ne, îți spunem ce mașini avem în parc.</p><p style="margin-top:22px"><a class="btn btn-blue" href="${telHref()}">${I.phone} Sună ${esc(CONFIG.phoneDisplay)}</a></p></section>`;
+      app.innerHTML = `<section class="wrap page-head"><div><h1 class="h1">Stocul nu s-a putut încărca</h1><p class="lead">Reîncarcă pagina peste un minut sau sună-ne, îți spunem ce mașini avem în parc.</p><p style="margin-top:22px"><a class="btn btn-accent" href="${telHref()}">${I.phone} Sună ${esc(CONFIG.phoneDisplay)}</a></p></div></section>`;
       return;
     }
   }
