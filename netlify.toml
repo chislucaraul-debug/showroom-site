@@ -3,3 +3,10 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Keep the project notes for Claude out of the public site.
+[[redirects]]
+  from = "/CLAUDE.md"
+  to = "/"
+  status = 404
+  force = true

@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>ADN Auto Parc — Mașini rulate</title>
 <meta name="description" content="Stocul ADN Auto Parc: mașini rulate, cu prețuri și detalii pentru fiecare mașină.">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%230F1B2D'/%3E%3Cpath d='M15 53 L32 14 L49 53' fill='none' stroke='%23fff' stroke-width='8.5' stroke-linejoin='round'/%3E%3Cpath d='M16.5 42.5 C 23 34, 41 32.5, 47.5 42.5' fill='none' stroke='%23FF5A1F' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="/brand/icon.svg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0B0B0C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400..800&family=Archivo:wght@400..700&display=swap" rel="stylesheet">
@@ -14,24 +18,24 @@
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
-  --paper:#F4F4F1; --surface:#FFFFFF; --ink:#0F1B2D; --muted:#566174; --line:#DCDDD7;
-  --accent:#FF5A1F; --on-accent:#0F1B2D; --green:#1F7A4D; --stage:#E4E6E1; --stage2:#D0D5CC;
-  --logo-tile:#0F1B2D; --logo-legs:#FFFFFF; --foot:#0F1B2D; --foot-ink:#C4CCD8;
+  --paper:#F4F4F1; --surface:#FFFFFF; --ink:#0B0B0C; --muted:#5E5F66; --line:#DEDED8;
+  --accent:#FF5A1F; --on-accent:#0B0B0C; --green:#1F7A4D; --stage:#E6E6E2; --stage2:#D3D3CD;
+  --black:#0B0B0C; --foot:#0B0B0C; --foot-ink:#B4B4BA;
   --display:"Unbounded","Archivo","Helvetica Neue",sans-serif;
   --font:"Archivo","Helvetica Neue",Arial,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#0C121A; --surface:#141C27; --ink:#EDF0F4; --muted:#9AA5B4; --line:#263241;
-    --green:#4CC38A; --stage:#1A2431; --stage2:#223041; --logo-tile:#FFFFFF; --logo-legs:#0F1B2D;
-    --foot:#080C12; --foot-ink:#AAB4C2; color-scheme:dark;
+    --paper:#0E0E10; --surface:#18181B; --ink:#F2F2F0; --muted:#A1A1A8; --line:#2A2A2F;
+    --green:#4CC38A; --stage:#1D1D21; --stage2:#26262B;
+    --foot:#060607; --foot-ink:#A6A6AD; color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --paper:#0C121A; --surface:#141C27; --ink:#EDF0F4; --muted:#9AA5B4; --line:#263241;
-  --green:#4CC38A; --stage:#1A2431; --stage2:#223041; --logo-tile:#FFFFFF; --logo-legs:#0F1B2D;
-  --foot:#080C12; --foot-ink:#AAB4C2; color-scheme:dark;
+  --paper:#0E0E10; --surface:#18181B; --ink:#F2F2F0; --muted:#A1A1A8; --line:#2A2A2F;
+  --green:#4CC38A; --stage:#1D1D21; --stage2:#26262B;
+  --foot:#060607; --foot-ink:#A6A6AD; color-scheme:dark;
 }
 html{height:100%;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 90px)}
 *,*::before,*::after{box-sizing:inherit}
@@ -54,16 +58,34 @@ a{color:inherit}
 .link{font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
 
 /* Header */
-.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--surface);border-bottom:1px solid var(--line)}
-.hdr{display:flex;align-items:center;gap:24px;min-height:70px}
-.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink)}
-.brand svg{flex:0 0 auto}
-.wm{font-family:var(--display);font-size:19px;font-weight:400;letter-spacing:-.02em;white-space:nowrap}
-.wm b{font-weight:800}
+.site-head{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--black);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
+.hdr{display:flex;align-items:center;gap:24px;min-height:76px}
+.brand{display:flex;align-items:center;text-decoration:none;color:#fff}
+.brand img{display:block;height:58px;width:auto}
 .nav{display:flex;gap:28px;margin-left:auto}
-.nav a{text-decoration:none;font-weight:600;font-size:15px;color:var(--muted);padding:10px 0}
-.nav a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
-.nav a:hover{color:var(--ink)}
+.nav a{text-decoration:none;font-weight:600;font-size:15px;color:#B9B9BE;padding:10px 0}
+.nav a[aria-current="page"]{color:#fff;box-shadow:inset 0 -2px 0 var(--accent)}
+.nav a:hover{color:#fff}
+
+/* Home hero */
+.hero{position:relative;overflow:hidden;isolation:isolate;background:var(--black);color:#fff;padding:60px 0 0}
+.hero::before{content:"";position:absolute;z-index:-1;left:30%;right:-10%;bottom:-45%;height:120%;background:radial-gradient(closest-side,rgba(255,90,31,.36),rgba(255,90,31,0));pointer-events:none}
+.hero-car{position:absolute;z-index:-1;right:-50px;bottom:70px;width:min(720px,60%);height:auto;pointer-events:none}
+.kicker{display:inline-flex;align-items:center;gap:10px;margin:0;font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.kicker::before{content:"";width:26px;height:2px;background:var(--accent)}
+.hero-title{font-family:var(--display);font-weight:800;font-size:clamp(34px,5.6vw,64px);line-height:1.02;letter-spacing:-.025em;margin:16px 0 0;max-width:13ch}
+.hero-title em{font-style:normal;color:var(--accent)}
+.hero-lead{color:#C9C9CE;font-size:18px;max-width:46ch;margin:18px 0 0}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn-ghost-dark{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.4)}
+.btn-ghost-dark:hover{box-shadow:inset 0 0 0 1.5px #fff}
+.stats{display:flex;flex-wrap:wrap;margin-top:52px;border-top:1px solid rgba(255,255,255,.12)}
+.stat{padding:18px 28px 22px 0;margin-right:28px;border-right:1px solid rgba(255,255,255,.12)}
+.stat:last-child{border-right:0;margin-right:0}
+.stat b{display:block;font-family:var(--display);font-size:26px;font-weight:700;color:#fff;white-space:nowrap}
+.stat b i{font-style:normal;color:var(--accent)}
+.stat span{color:#9C9CA2;font-size:14px}
+.stripe{height:6px;background:repeating-linear-gradient(-55deg,var(--accent) 0 18px,var(--black) 18px 30px)}
 .hdr-call{min-height:44px;padding:0 16px}
 .lbl-short{display:none}
 
@@ -75,7 +97,7 @@ a{color:inherit}
 .chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;min-height:40px}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .chip .n{color:var(--muted);font-weight:500;margin-left:4px}
-.chip[aria-pressed="true"] .n{color:inherit;opacity:.7}
+.chip[aria-pressed="true"] .n{color:var(--accent);opacity:1}
 .selects{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .sel{min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:15px;padding:0 12px;min-width:150px}
 .freset{background:none;border:0;padding:8px 4px;font:inherit;font-weight:700;color:var(--ink);cursor:pointer;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:3px}
@@ -86,8 +108,8 @@ a{color:inherit}
 .btns{display:flex;gap:10px;flex-wrap:wrap}
 
 /* Card */
-.card{background:var(--surface);border-radius:14px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;border:1px solid var(--line)}
-.card:hover{border-color:var(--ink)}
+.card{background:var(--surface);border-radius:14px;overflow:hidden;text-decoration:none;display:flex;flex-direction:column;border:1px solid var(--line);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.12)}
 .card-media{position:relative;aspect-ratio:4/3;background:var(--stage)}
 .card-media > svg,.card-media > img{width:100%;height:100%;object-fit:cover}
 .card.is-sold .card-media > svg,.card.is-sold .card-media > img{filter:grayscale(1);opacity:.6}
@@ -95,12 +117,13 @@ a{color:inherit}
 .badge-inline{position:static;display:inline-block}
 .badge-res{background:var(--accent);color:var(--on-accent)}
 .badge-sold{background:#111;color:#fff}
-.card-body{padding:16px 16px 14px;flex:1;display:flex;flex-direction:column}
+.card-body{padding:16px 16px 14px;flex:1;display:flex;flex-direction:column;border-top:3px solid var(--accent)}
 .card-title{font-size:17px;font-weight:700;margin:0;line-height:1.25}
 .specs{display:flex;flex-wrap:wrap;gap:4px 14px;list-style:none;padding:0;margin:8px 0 0;font-size:14px;color:var(--muted)}
 .price-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
 .card-body .specs{margin-bottom:14px}
-.price{font-family:var(--display);font-weight:700;font-size:21px;letter-spacing:-.02em;line-height:1.1}
+.price{font-family:var(--display);font-weight:800;font-size:21px;letter-spacing:-.02em;line-height:1.1;white-space:nowrap}
+.price i{font-style:normal;color:var(--accent)}
 .price-old{color:var(--muted);font-size:15px;font-weight:600}
 .price-sold{font-family:var(--display);font-weight:700;font-size:19px;color:var(--muted)}
 
@@ -174,12 +197,13 @@ a{color:inherit}
 .hours li.today{font-weight:700}
 
 /* Footer */
-.site-foot{background:var(--foot);color:var(--foot-ink);margin-top:64px;padding:48px 0 28px}
+.site-foot{background:var(--foot);color:var(--foot-ink);margin-top:64px;padding:48px 0 28px;border-top:4px solid var(--accent)}
 .foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:28px}
 .site-foot h3{font-size:15px;font-weight:700;color:#fff;margin:0 0 10px}
 .site-foot p{margin:0 0 6px;font-size:15px}
 .site-foot a{color:#fff}
-.site-foot .brand{color:#fff;margin-bottom:12px}
+.site-foot .brand{color:#fff;margin-bottom:14px}
+.site-foot .brand img{height:64px}
 .site-foot .hours li{border-color:rgba(255,255,255,.12);font-size:15px}
 .foot-bottom{border-top:1px solid rgba(255,255,255,.12);margin-top:32px;padding-top:18px;font-size:14px;opacity:.75}
 .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-weight:600;z-index:120}
@@ -194,7 +218,13 @@ a{color:inherit}
   .nav{order:3;width:100%;margin-left:0;overflow-x:auto;gap:22px}
   .hdr-call{margin-left:auto}
   .lbl-long{display:none}.lbl-short{display:inline}
-  .wm{font-size:16px}
+  .brand img{height:46px}
+  .hero{padding-top:36px}
+  .hero-car{width:120%;right:-45%;bottom:auto;top:12px;opacity:.35}
+  .hero-lead{font-size:17px}
+  .stats{margin-top:36px}
+  .stat{padding-right:18px;margin-right:18px}
+  .stat b{font-size:21px}
   .page-head{padding-top:26px}
   .sel{flex:1 1 calc(50% - 10px);min-width:0}
   body.has-mbar .mbar{display:flex}
@@ -369,10 +399,19 @@ function hoursList(){
 }
 
 /* ---------- Logo ---------- */
-function logoMark(size){
-  return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="var(--logo-tile)"/><path d="M15 53 L32 14 L49 53" fill="none" stroke="var(--logo-legs)" stroke-width="8.5" stroke-linejoin="round"/><path d="M16.5 42.5 C 23 34, 41 32.5, 47.5 42.5" fill="none" stroke="#FF5A1F" stroke-width="5" stroke-linecap="round"/></svg>`;
+// Logo files live in /brand. The white version sits on the black header and footer.
+const logoImg = (h, alt = "") => `<img src="/brand/logo-for-dark-backgrounds.svg" alt="${alt}" width="${Math.round(h * 2.925)}" height="${h}">`;
+
+// Sports-car silhouette from the logo, used as a big background shape in the home hero.
+function heroCar(){
+  return `<svg class="hero-car" viewBox="0 0 400 115" aria-hidden="true">
+    <path d="M24 86 L18 70 L6 60 L42 58 C84 56 122 48 152 36 C176 26 200 21 220 21 C242 21 258 29 274 42 C304 58 352 64 388 73 L394 80 L384 89 L346 91 A27 27 0 0 0 290 91 L116 91 A27 27 0 0 0 60 91 Z" fill="rgba(255,255,255,.07)" stroke="rgba(255,90,31,.6)" stroke-width=".8"/>
+    <path d="M176 45 C192 33 214 28 236 31 C250 34 258 41 264 48 C232 49 204 50 176 51 Z" fill="rgba(255,90,31,.55)"/>
+    <path d="M118 76 C150 60 176 56 196 56 L208 58 C184 60 156 66 132 78 Z" fill="rgba(255,90,31,.55)"/>
+    <circle cx="88" cy="92" r="20" fill="rgba(255,255,255,.07)"/><circle cx="88" cy="92" r="11" fill="none" stroke="rgba(255,90,31,.6)" stroke-width="3.5"/>
+    <circle cx="318" cy="92" r="20" fill="rgba(255,255,255,.07)"/><circle cx="318" cy="92" r="11" fill="none" stroke="rgba(255,90,31,.6)" stroke-width="3.5"/>
+  </svg>`;
 }
-const wordmark = () => `<span class="wm"><b>ADN</b> Auto Parc</span>`;
 
 /* ---------- Icons ---------- */
 const I = {
@@ -415,7 +454,7 @@ function badge(car, inline = false){
 }
 function priceHTML(car){
   if (isSold(car)) return `<span class="price-sold">Vândut</span>`;
-  return `<span class="price">${eur(car.price)}</span>${car.isPromo ? `<s class="price-old" aria-label="Preț vechi">${eur(car.oldPrice)}</s>` : ""}`;
+  return `<span class="price">${num(car.price)} <i>€</i></span>${car.isPromo ? `<s class="price-old" aria-label="Preț vechi">${eur(car.oldPrice)}</s>` : ""}`;
 }
 const specItems = c => [c.year, c.km ? num(c.km) + " km" : "", c.hp ? c.hp + " CP" : "", c.fuel, c.gearbox].filter(Boolean).map(s => `<li>${esc(s)}</li>`).join("");
 function card(car){
@@ -480,11 +519,33 @@ function renderList(params){
   const brands = uniq(L.map(c => c.brand)).sort((a,b) => a.localeCompare(b, "ro"));
   const fuels = uniq(L.map(c => c.fuel));
   const boxes = uniq(L.map(c => c.gearbox));
+  const avail = L.filter(c => !isSold(c));
+  const nBrands = uniq(avail.map(c => c.brand)).length;
+  const minPrice = avail.length ? Math.min(...avail.map(c => c.price).filter(Boolean)) : 0;
+  const stats = avail.length ? [
+    [avCount, plural(avCount).replace(/^\d+ /, "") + (avCount === 1 ? " disponibilă" : " disponibile")],
+    [nBrands, nBrands === 1 ? "marcă" : "mărci"],
+    minPrice ? [`${num(minPrice)} <i>€</i>`, "cel mai mic preț"] : null
+  ].filter(Boolean) : [];
   const opt = (k, label, vals) => vals.length < 2 ? "" : `<select class="sel" data-s="${k}" aria-label="${label}"><option value="">${label}: toate</option>${vals.map(v => `<option value="${slugify(v)}"${F[k] === slugify(v) ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>`;
 
   app.innerHTML = `
-    <section class="wrap page-head">
-      <div><h1 class="h1">Mașini în stoc</h1><p class="lead" id="count"></p></div>
+    <section class="hero">
+      ${heroCar()}
+      <div class="wrap">
+        <p class="kicker">Parc auto în ${esc(CONFIG.city)}</p>
+        <h1 class="hero-title">Mașini rulate, <em>verificate</em>. Gata de drum.</h1>
+        <p class="hero-lead">Alege mașina din stoc, apoi sună-ne sau scrie-ne pe WhatsApp pentru detalii și test drive.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-accent" type="button" id="tostock">Vezi mașinile din stoc</button>
+          <a class="btn btn-ghost-dark" href="${waHref()}" target="_blank" rel="noopener">${I.chat} Scrie pe WhatsApp</a>
+        </div>
+        ${stats.length ? `<div class="stats">${stats.map(([v, l]) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`).join("")}</div>` : ""}
+      </div>
+    </section>
+    <div class="stripe" aria-hidden="true"></div>
+    <section class="wrap page-head" id="stoc">
+      <div><h2 class="h1">Mașini în stoc</h2><p class="lead" id="count"></p></div>
     </section>
     <section class="wrap">
       <div class="toolbar">
@@ -501,6 +562,7 @@ function renderList(params){
     </section>`;
 
   const results = $("#results"), count = $("#count"), resetBtn = $("#freset");
+  $("#tostock").onclick = () => $("#stoc").scrollIntoView({ behavior: "smooth" });
   $("#f-sort").value = F.sort;
   function apply(){
     let r = L.filter(c =>
@@ -707,15 +769,14 @@ function render404(){
 
 /* ---------- Header + footer ---------- */
 function renderChrome(){
-  $("#brand").innerHTML = `${logoMark(38)}${wordmark()}`;
+  $("#brand").innerHTML = logoImg(58);
   const call = $("#hdrcall");
   call.href = telHref();
   call.innerHTML = `${I.phone}<span class="lbl-long">${esc(CONFIG.phoneDisplay)}</span><span class="lbl-short">Sună</span>`;
   const social = [CONFIG.facebook && `<a href="${esc(CONFIG.facebook)}" target="_blank" rel="noopener">Facebook</a>`, CONFIG.instagram && `<a href="${esc(CONFIG.instagram)}" target="_blank" rel="noopener">Instagram</a>`].filter(Boolean).join(" · ");
-  const footMark = `<svg width="38" height="38" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="15" fill="#FFFFFF"/><path d="M15 53 L32 14 L49 53" fill="none" stroke="#0F1B2D" stroke-width="8.5" stroke-linejoin="round"/><path d="M16.5 42.5 C 23 34, 41 32.5, 47.5 42.5" fill="none" stroke="#FF5A1F" stroke-width="5" stroke-linecap="round"/></svg>`;
   $("#footer").innerHTML = `
     <div class="wrap foot-grid">
-      <div><div class="brand">${footMark}${wordmark()}</div><p>${esc(CONFIG.tagline)}</p>${social ? `<p>${social}</p>` : ""}</div>
+      <div><div class="brand">${logoImg(64, esc(CONFIG.name))}</div><p>${esc(CONFIG.tagline)}</p>${social ? `<p>${social}</p>` : ""}</div>
       <div><h3>Program</h3>${hoursList()}</div>
       <div><h3>Contact</h3><p>${esc(CONFIG.address)}, ${esc(CONFIG.city)}</p><p><a href="${telHref()}">${esc(CONFIG.phoneDisplay)}</a></p><p><a href="${waHref()}" target="_blank" rel="noopener">WhatsApp</a></p></div>
       <div><h3>Date firmă</h3><p>${esc(CONFIG.legalName)}<br>CUI ${esc(CONFIG.cui)}<br>Reg. Com. ${esc(CONFIG.regCom)}</p><p><a href="https://anpc.ro/ce-este-sal/" target="_blank" rel="noopener">ANPC – Soluționarea alternativă a litigiilor</a></p></div>
